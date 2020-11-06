@@ -16,8 +16,9 @@
         android:src="@drawable/title" />
 
     <com.kakao.usermgmt.LoginButton
-        android:layout_width="match_parent"
+        android:layout_width="360sp"
         android:layout_height="match_parent"
-        android:layout_marginTop="300sp"/>
+        android:layout_marginTop="300sp"
+        android:layout_gravity="center"/>
 
 </LinearLayout>
