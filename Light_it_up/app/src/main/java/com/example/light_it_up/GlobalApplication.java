@@ -1,3 +1,4 @@
+//로그인 처리하는 자바코드~~~~~
 package com.example.light_it_up;
 
 import android.app.Application;

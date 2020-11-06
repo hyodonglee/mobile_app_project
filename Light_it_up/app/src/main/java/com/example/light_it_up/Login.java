@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.kakao.auth.Session;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
@@ -31,7 +30,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
@@ -72,7 +71,7 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), LoginNext.class);
+                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
                     intent.putExtra("name", result.getNickname());
                     intent.putExtra("profile", result.getProfileImagePath());
                     if(result.getKakaoAccount().hasEmail() == OptionalBoolean.TRUE)

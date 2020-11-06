@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
-public class LoginNext extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
     String strNickname, strProfile, strEmail, strGender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class LoginNext extends AppCompatActivity {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
-                        Intent intent = new Intent(LoginNext.this, Login.class);
+                        Intent intent = new Intent(SignIn.this, Login.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -55,5 +55,14 @@ public class LoginNext extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    public void signUp(View view) {
+        Intent intent = new Intent();
+        Toast.makeText(getApplicationContext(), "정상적으로 회원가입 되었습니다.",Toast.LENGTH_SHORT).show();
+
+        //디비 처리 해야함~~~~~~~~~~~~~~
+        startActivity(intent);
     }
 }
