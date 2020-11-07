@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.content.Intent;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,9 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 public class SignIn extends AppCompatActivity {
     String strNickname, strProfile, strEmail, strGender;
+    EditText strPhone;
+    String phoneNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +39,8 @@ public class SignIn extends AppCompatActivity {
         strProfile = intent.getStringExtra("profile");
         strEmail = intent.getStringExtra("email");
         strGender = intent.getStringExtra("gender");
+        strPhone = (EditText)findViewById(R.id.EditPhone);
+        phoneNum = strPhone.toString();
 
         tvNickname.setText(strNickname);
         tvEmail.setText(strEmail);
@@ -59,7 +67,11 @@ public class SignIn extends AppCompatActivity {
 
 
     public void signUp(View view) {
-        Intent intent = new Intent();
+
+        Intent intent = new Intent(getApplicationContext(), Main.class);
+        System.out.println(strNickname);
+        intent.putExtra("name",strNickname);
+        intent.putExtra("phone", phoneNum);
         Toast.makeText(getApplicationContext(), "정상적으로 회원가입 되었습니다.",Toast.LENGTH_SHORT).show();
 
         //디비 처리 해야함~~~~~~~~~~~~~~
