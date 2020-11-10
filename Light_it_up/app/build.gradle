@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation files('lib/com.skt.Tmap_1.66.jar')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation "com.kakao.sdk:v2-user:2.0.5" // 카카오 로그인
