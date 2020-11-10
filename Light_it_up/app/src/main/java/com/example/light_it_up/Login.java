@@ -11,6 +11,11 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kakao.auth.Session;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
@@ -71,6 +76,31 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = firebaseDatabase.getReference("users");
+
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                if(snapshot.getKey().equals(result.getNickname())){
+                                    String name = result.getNickname();
+
+                                    Intent intent = new Intent(getApplicationContext(), Main.class);
+                                    intent.putExtra("name",result.getNickname());
+                                    Toast.makeText(getApplicationContext(), "정상적으로 로그인 되었습니다.",Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     Intent intent = new Intent(getApplicationContext(), SignIn.class);
                     intent.putExtra("name", result.getNickname());
                     intent.putExtra("profile", result.getProfileImagePath());
