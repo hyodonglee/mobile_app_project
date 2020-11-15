@@ -99,7 +99,7 @@ public class Login extends AppCompatActivity {
                         if(snapshot.getKey().equals(result.getNickname())){
                             flag=1;
                             String name = result.getNickname();
-                            Intent intent = new Intent(getApplicationContext(), Main.class);
+                            Intent intent = new Intent(getApplicationContext(), NavigationUi.class);
                             intent.putExtra("name",result.getNickname());
                             message.what = MSG_A ;
                             message.obj = intent;
