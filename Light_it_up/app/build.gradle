@@ -26,15 +26,39 @@ android {
         }
     }
 }
+
 dependencies {
-    // 카카오 로그인 sdk를 사용하기 위해 필요.
     implementation 'com.kakao.sdk:usermgmt:1.28.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation files('lib/com.skt.Tmap_1.66.jar')
+    implementation 'com.google.firebase:firebase-database:16.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.navigation:navigation-fragment:2.1.0'
+    implementation 'androidx.navigation:navigation-ui:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation "com.kakao.sdk:v2-user:2.0.5" // 카카오 로그인
     implementation "com.kakao.sdk:v2-talk:2.0.5" // 친구, 메시지(카카오톡)
+
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1' //json parser
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.8.0' // log 확인
+
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'build.xml'
+    }
 }
