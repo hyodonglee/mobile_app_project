@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".NavigationUi"
-            android:label="@string/title_activity_navigation_ui"
-            android:theme="@style/NoActionBar"></activity>
-        <activity android:name=".viewHome"></activity>
+            android:name=".Navi"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
         <activity android:name=".Main" />
         <activity android:name=".SignIn" />
         <activity android:name=".Login">
