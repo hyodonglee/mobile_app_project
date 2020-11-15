@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "571714192536",
+    "firebase_url": "https://lightitup-c4c0d.firebaseio.com",
+    "project_id": "lightitup-c4c0d",
+    "storage_bucket": "lightitup-c4c0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571714192536:android:b56d0a02285c31e3afbced",
+        "android_client_info": {
+          "package_name": "com.example.light_it_up"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571714192536-3f7coqnd3qj6eeb9q5mkocrih9pp5bfe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.light_it_up",
+            "certificate_hash": "3d124fb61e74dba272ca983610ae83cfd72e6e2c"
+          }
+        },
+        {
+          "client_id": "571714192536-jdseamp9rr0ph43s1n63vsbhrk3s6c3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoEyO3gh3x2hYaM5kF4ddHfjYEzKm0leY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571714192536-jdseamp9rr0ph43s1n63vsbhrk3s6c3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
