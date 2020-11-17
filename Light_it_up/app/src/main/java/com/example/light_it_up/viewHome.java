@@ -1,16 +1,25 @@
 package com.example.light_it_up;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import com.skt.Tmap.TMapMarkerItem;
@@ -116,17 +125,41 @@ public class viewHome extends AppCompatActivity {
 
         tMapView.addTMapPolyLine("Line1", tMapPolyLine);
 
-//        ArrayList<TMapPoint> alTMapPoint = new ArrayList<TMapPoint>();
-//        alTMapPoint.add( new TMapPoint(37.570841, 126.985302) ); // SKT타워
-//        alTMapPoint.add( new TMapPoint(37.551135, 126.988205) ); // N서울타워
-//        alTMapPoint.add( new TMapPoint(37.579600, 126.976998) ); // 경복궁
-//
-//
+
+
+    }
+
+
+    public void GPS(View view) {
+
+
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
+                    0 );
+        }
+        else {
+
+            gpsTracker locate = new gpsTracker(this);
+            double locate_latitude = locate.getLatitude();
+            double locate_longitude = locate.getLongitude();
+
+            Toast.makeText(getApplicationContext(),
+                    "위도 : " + locate_longitude + "\n" +
+                            "경도 : " + locate_latitude + "\n",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
 
 
 
-
 }
+
+
+
+
 
 
