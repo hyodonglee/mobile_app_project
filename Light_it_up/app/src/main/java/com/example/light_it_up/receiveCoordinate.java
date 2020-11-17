@@ -1,6 +1,10 @@
 package com.example.light_it_up;
 
+import android.graphics.Color;
 import android.util.Log;
+
+import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapPolyLine;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
@@ -20,6 +24,7 @@ import okhttp3.RequestBody;
 public class receiveCoordinate {
 
         ArrayList<Coord> coordinates = new ArrayList<Coord>();
+        ArrayList<TMapPoint> pointList = new ArrayList<TMapPoint>();
 
         private receiveCoordinate httpConn = receiveCoordinate.getInstance();
         private static OkHttpClient client;
@@ -29,12 +34,14 @@ public class receiveCoordinate {
         }
 
 
-        public void sendData(Double startX,Double startY,Double endX,Double endY) {
+        public ArrayList<TMapPoint> sendData(Double startX,Double startY,Double endX,Double endY) {
             new Thread() {
                 public void run() {
                     httpConn.requestWebServer(startX,startY,endX,endY,callback);
                 }
             }.start();;
+
+            return pointList;
         }
 
         public receiveCoordinate(){ this.client = new OkHttpClient(); }
@@ -68,6 +75,7 @@ public class receiveCoordinate {
             @Override
             public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
 
+
                 String body = response.body().string();
                 Log.d("Main", "서버에서 응답한 Body:" + body);
 
@@ -85,18 +93,29 @@ public class receiveCoordinate {
                                 JSONArray vertex = (JSONArray) coords.get(j);
                                 Coord coord = new Coord(vertex.get(0).toString(), vertex.get(1).toString());
                                 coordinates.add(coord);
+                                pointList.add(new TMapPoint(Double.parseDouble(vertex.get(1).toString()),Double.parseDouble(vertex.get(0).toString())));
+
                             }
                         }
                     }
+
+
 
                     for (Coord coord : coordinates) {
                         System.out.println(coord.first() + " " + coord.second());
                     }
 
+
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
             }
+
+
+
+
 
 
             @Override
@@ -104,6 +123,10 @@ public class receiveCoordinate {
                 Log.d("Main", "콜백오류:"+e.getMessage());
             }
         };
+
+
+
+
 
 
         private static class Coord {
