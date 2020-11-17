@@ -1,6 +1,7 @@
 package com.example.light_it_up;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -13,6 +14,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.light_it_up.ui.home.HomeFragment;
+import com.example.light_it_up.ui.info.InfoFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,10 +36,14 @@ import java.security.MessageDigest;
 public class Login extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference ref = firebaseDatabase.getReference("users");
+
     public MeV2Response result;
     private SessionCallback sessionCallback;
     private final int MSG_A = 0 ;
     private final int MSG_B = 1 ;
+
+    InfoFragment frag = new InfoFragment();
+    Bundle bun = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,9 @@ public class Login extends AppCompatActivity {
                         intent.putExtra("gender", result.getKakaoAccount().getGender().getValue());
                     else
                         intent.putExtra("gender", "none");
+                    bun.putString("name", result.getNickname());
+                    frag.setArguments(bun);
+
                     startActivity(intent);
                     finish();
                     break;
@@ -101,6 +111,9 @@ public class Login extends AppCompatActivity {
                             String name = result.getNickname();
                             Intent intent = new Intent(getApplicationContext(), Navi.class);
                             intent.putExtra("name",result.getNickname());
+                            bun.putString("name", name);
+                            frag.setArguments(bun);
+
                             message.what = MSG_A ;
                             message.obj = intent;
                             handler.sendMessage(message);

@@ -1,4 +1,4 @@
-package com.example.light_it_up.ui.gallery;
+package com.example.light_it_up.ui.info;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
