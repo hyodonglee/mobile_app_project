@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +41,12 @@ import okhttp3.RequestBody;
 public class viewHome extends AppCompatActivity {
 
 
-    TMapView tMapView;
+    static TMapView tMapView;
+
+
+    public static TMapView getMapView(){
+        return tMapView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,7 @@ public class viewHome extends AppCompatActivity {
         setContentView(R.layout.activity_view_home);
 
         LinearLayout linearLayoutTmap = (LinearLayout) findViewById(R.id.layoutMap);
-        tMapView = new TMapView(this);
+        tMapView=new TMapView(this);
         tMapView.setSKTMapApiKey("l7xx9e4f453a79804608bc16947e4ed09909");
         linearLayoutTmap.addView(tMapView);
     }
@@ -70,7 +77,7 @@ public class viewHome extends AppCompatActivity {
         setMarker(startX,startY,endX,endY);
 
         receiveCoordinate receive = new receiveCoordinate();
-        receive.sendData(startX,startY,endX,endY);
+        drawLine(receive.sendData(startX,startY,endX,endY));
     }
 
     public void setMarker(double startX,double startY,double endX,double endY){
@@ -97,6 +104,27 @@ public class viewHome extends AppCompatActivity {
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
 
     }
+
+    public void drawLine(ArrayList<TMapPoint> pointList){
+        TMapPolyLine tMapPolyLine = new TMapPolyLine();
+        tMapPolyLine.setLineColor(Color.BLUE);
+        tMapPolyLine.setLineWidth(2);
+
+        for( int i=0; i<pointList.size(); i++ ) {
+            tMapPolyLine.addLinePoint( pointList.get(i) );
+        }
+
+        tMapView.addTMapPolyLine("Line1", tMapPolyLine);
+
+//        ArrayList<TMapPoint> alTMapPoint = new ArrayList<TMapPoint>();
+//        alTMapPoint.add( new TMapPoint(37.570841, 126.985302) ); // SKT타워
+//        alTMapPoint.add( new TMapPoint(37.551135, 126.988205) ); // N서울타워
+//        alTMapPoint.add( new TMapPoint(37.579600, 126.976998) ); // 경복궁
+//
+//
+    }
+
+
 
 
 }
