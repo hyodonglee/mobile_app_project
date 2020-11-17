@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.light_it_up.ui.gallery.GalleryFragment"
+        android:name="com.example.light_it_up.ui.info.InfoFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_info" />
 
     <fragment
         android:id="@+id/nav_slideshow"
