@@ -3,6 +3,7 @@
     package="com.example.light_it_up">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".GlobalApplication"
@@ -19,6 +20,7 @@
         </activity>
         <activity android:name=".Main" />
         <activity android:name=".SignIn" />
+        <activity android:name=".viewHome" />
         <activity android:name=".Login">
         </activity>
 
