@@ -30,6 +30,12 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        SmsManager smsManager = SmsManager.getDefault();
+        String sendTo = "01090856697";
+        String myMessage = "help me";
+        smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
+        Toast.makeText(getBaseContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+
         camera = Camera.open();
         camera.setDisplayOrientation(90);
         surfaceView = (SurfaceView) findViewById(R.id.surface1);
@@ -39,7 +45,6 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Toast.makeText(VideoActivity.this, "녹화시작", Toast.LENGTH_SHORT).show();
                 try {
                     mediaRecorder = new MediaRecorder();
                     urlString = new ArrayList<String>();
@@ -49,19 +54,12 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                     mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                     mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
                     mediaRecorder.setOrientationHint(90);
-//                    mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory() +
-//                            File.separator + "1.mp4");
                     mediaRecorder.setOutputFile("/sdcard/1.mp4");
                     mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                SmsManager smsManager = SmsManager.getDefault();
-                                String sendTo = "01090856697";
-                                String myMessage = "help me";
-                                smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
-                                Toast.makeText(getBaseContext(), "메세지 전송 완료", Toast.LENGTH_SHORT).show();
                                 mediaRecorder.prepare();
                                 mediaRecorder.start();
                                 recording = true;
