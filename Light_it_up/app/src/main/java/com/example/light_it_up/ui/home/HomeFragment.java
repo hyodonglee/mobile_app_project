@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         tMapView = new TMapView(getActivity());
         tMapView.setHttpsMode(true);
 
@@ -86,21 +85,6 @@ public class HomeFragment extends Fragment {
         tMapView.setMapType(TMapView.MAPTYPE_STANDARD);  //일반지도
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
         mapView.addView(tMapView);
-//        TMapData tmapdata = new TMapData();
-
-
-//        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
-//            @Override
-//            public void onFindAllPOI(ArrayList poiItem) {
-//                for(int i = 0; i < poiItem.size(); i++) {
-//                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-//                            "Address: " + item.getPOIAddress().replace("null",
-//                            "")  + ", " +
-//                            "Point: " + item.getPOIPoint().toString());
-//                }
-//            }
-//        });
 
         return view;
     }
