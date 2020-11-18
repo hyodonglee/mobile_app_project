@@ -10,13 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -29,23 +28,13 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
-import org.jetbrains.annotations.NotNull;
-import org.json.simple.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 
+import java.util.List;
 import java.util.StringTokenizer;
 
 
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 
 
@@ -53,6 +42,7 @@ public class viewHome extends AppCompatActivity {
 
 
     static TMapView tMapView;
+    static List<String> serchList = new ArrayList<String>();
 
 
     public static TMapView getMapView(){
@@ -68,6 +58,39 @@ public class viewHome extends AppCompatActivity {
         tMapView=new TMapView(this);
         tMapView.setSKTMapApiKey("l7xx9e4f453a79804608bc16947e4ed09909");
         linearLayoutTmap.addView(tMapView);
+
+
+
+        setList("대구");
+        setList("경북대학교 IT");
+
+        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddress);
+
+        // AutoCompleteTextView 에 아답터를 연결한다.
+        autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, serchList ));
+    }
+
+    public static void setList(String search){
+
+
+        TMapData tmapdata = new TMapData();
+
+
+        tmapdata.findAllPOI(search, new TMapData.FindAllPOIListenerCallback() {
+            @Override
+            public void onFindAllPOI(ArrayList poiItem) {
+                for(int i = 0; i < poiItem.size(); i++) {
+                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
+                    serchList.add(item.getPOIName());
+//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+//                            "Point: " + item.getPOIPoint().toString());
+                }
+            }
+        });
+
+
     }
 
     public void findRoadClick(View view) throws Exception {
@@ -115,6 +138,8 @@ public class viewHome extends AppCompatActivity {
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
 
     }
+
+
 
     public void drawLine(ArrayList<TMapPoint> pointList){
         TMapPolyLine tMapPolyLine = new TMapPolyLine();
@@ -170,26 +195,26 @@ public class viewHome extends AppCompatActivity {
     }
 
 
-    public void serachAddress(View view) {
-
-        EditText seraching = (EditText) findViewById(R.id.editTextAddress);
-        String strData = seraching.getText().toString();
-
-        TMapData tmapdata = new TMapData();
-
-        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
-            @Override
-            public void onFindAllPOI(ArrayList poiItem) {
-                for(int i = 0; i < poiItem.size(); i++) {
-                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-                            "Point: " + item.getPOIPoint().toString());
-                }
-            }
-        });
-
-    }
+//    public void serachAddress(View view) {
+//
+//        EditText seraching = (EditText) findViewById(R.id.editTextAddress);
+//        String strData = seraching.getText().toString();
+//
+//        TMapData tmapdata = new TMapData();
+//
+//        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
+//            @Override
+//            public void onFindAllPOI(ArrayList poiItem) {
+//                for(int i = 0; i < poiItem.size(); i++) {
+//                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
+//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+//                            "Point: " + item.getPOIPoint().toString());
+//                }
+//            }
+//        });
+//
+//    }
 }
 
 
