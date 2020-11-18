@@ -30,13 +30,13 @@
         <activity android:name=".VideoActivity"/>
 
         <activity android:name=".Login">
+        </activity>
+        <activity android:name=".viewHome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".viewHome">
         </activity>
 
         <meta-data

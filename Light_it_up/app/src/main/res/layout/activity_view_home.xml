@@ -15,36 +15,25 @@
 
         <Button
             android:id="@+id/textSearch"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="25dp"
+            android:textSize="15dp"
             android:textAlignment="center"
             android:background="#A8ADB1"
             android:textColor="#000000"
-            android:text="주소"/>
+            android:text="주소입력"/>
 
-        <EditText
-            android:id="@+id/editTextAddress"
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteAddress"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text"
-            />
-
-        <Button
-            android:id="@+id/buttonSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:background="#333E47"
-            android:textColor="#F6F6F6"
-            android:text="검색"
-            android:onClick="serachAddress"/>
+            android:layout_weight="3"
+            android:textColorHint="#555555"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="1"
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
