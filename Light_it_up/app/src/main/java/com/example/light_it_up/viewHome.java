@@ -22,7 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
+import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
@@ -148,6 +150,19 @@ public class viewHome extends AppCompatActivity {
                     "위도 : " + locate_longitude + "\n" +
                             "경도 : " + locate_latitude + "\n",
                     Toast.LENGTH_SHORT).show();
+
+            TMapMarkerItem markerGPS = new TMapMarkerItem();
+
+            TMapPoint GpsPoint = new TMapPoint(locate_latitude, locate_longitude);
+
+            Bitmap bitmapGps = BitmapFactory.decodeResource(getResources(), R.drawable.map_markergps);
+
+            markerGPS.setIcon(bitmapGps); // 마커 아이콘 지정
+            markerGPS.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+            markerGPS.setTMapPoint( GpsPoint ); // 마커의 좌표 지정
+            markerGPS.setName("현위치"); // 마커의 타이틀 지정
+            tMapView.addMarkerItem("markerGPS", markerGPS); // 지도에 마커 추가
+            tMapView.setCenterPoint( locate_longitude,locate_latitude );
         }
 
 
@@ -155,7 +170,26 @@ public class viewHome extends AppCompatActivity {
     }
 
 
+    public void serachAddress(View view) {
 
+        EditText seraching = (EditText) findViewById(R.id.editTextAddress);
+        String strData = seraching.getText().toString();
+
+        TMapData tmapdata = new TMapData();
+
+        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
+            @Override
+            public void onFindAllPOI(ArrayList poiItem) {
+                for(int i = 0; i < poiItem.size(); i++) {
+                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
+                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+                            "Point: " + item.getPOIPoint().toString());
+                }
+            }
+        });
+
+    }
 }
 
 
