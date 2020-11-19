@@ -115,15 +115,6 @@ public class receiveCoordinate {
 
                     drawLine(pointList);
 
-
-
-
-//                    for (Coord coord : coordinates) {
-//                        System.out.println(coord.first() + " " + coord.second());
-//                    }
-
-
-
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
