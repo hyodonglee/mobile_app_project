@@ -7,34 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".viewHome">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <Button-->
-<!--            android:id="@+id/textSearch"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textSize="15dp"-->
-<!--            android:textAlignment="center"-->
-<!--            android:background="#A8ADB1"-->
-<!--            android:textColor="#000000"-->
-<!--            android:text="주소입력"/>-->
-
-<!--        <AutoCompleteTextView-->
-<!--            android:id="@+id/autoCompleteAddress"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="3"-->
-<!--            android:textColorHint="#555555"-->
-<!--            android:completionHint="검색어를 입력하세요."-->
-<!--            android:completionThreshold="1"-->
-<!--            android:text=""/>-->
-<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,14 +86,32 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_GPS"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="GPS"
             android:textSize="20dp"
             android:textStyle="bold"
             android:text="GPS" />
+
+        <Button
+            android:id="@+id/btn_showLoad"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="showLoad"
+            android:textSize="18dp"
+            android:text="최단경로" />
+
+        <Button
+            android:id="@+id/bnt_showLoadlight"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="showLoadlight"
+            android:textSize="15dp"
+            android:text="가로등경로" />
 
 
     </LinearLayout>
