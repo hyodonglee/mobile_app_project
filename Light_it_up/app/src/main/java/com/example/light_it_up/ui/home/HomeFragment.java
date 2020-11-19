@@ -62,6 +62,13 @@ public class HomeFragment extends Fragment {
         fab_sub1 = (FloatingActionButton) view.findViewById(R.id.fab_sub1);
         fab_sub2 = (FloatingActionButton) view.findViewById(R.id.fab_sub2);
 
+        fab_sub1.startAnimation(fab_close);
+        fab_sub2.startAnimation(fab_close);
+        fab_sub1.setClickable(false);
+        fab_sub2.setClickable(false);
+        openFlag = false;
+        // 초반 클릭하기 전에 메뉴바 숨기기 위한 코
+
         setList("대구");
         setList("경북대학교 IT");
 
