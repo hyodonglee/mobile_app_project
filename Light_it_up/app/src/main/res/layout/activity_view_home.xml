@@ -7,43 +7,34 @@
     android:layout_height="match_parent"
     tools:context=".viewHome">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="horizontal">-->
 
-        <Button
-            android:id="@+id/textSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textAlignment="center"
-            android:background="#A8ADB1"
-            android:textColor="#000000"
-            android:text="주소입력"/>
+<!--        <Button-->
+<!--            android:id="@+id/textSearch"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textAlignment="center"-->
+<!--            android:background="#A8ADB1"-->
+<!--            android:textColor="#000000"-->
+<!--            android:text="주소입력"/>-->
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textColorHint="#555555"
-            android:completionHint="검색어를 입력하세요."
-            android:completionThreshold="1"
-            android:text=""/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:id="@+id/layoutMap"
-        android:orientation="horizontal">
-
-    </LinearLayout>
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/autoCompleteAddress"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="3"-->
+<!--            android:textColorHint="#555555"-->
+<!--            android:completionHint="검색어를 입력하세요."-->
+<!--            android:completionThreshold="1"-->
+<!--            android:text=""/>-->
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,12 +49,15 @@
             android:textSize="20dp"
             android:text="출발점 : " />
 
-        <EditText
-            android:id="@+id/editTextStart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            />
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteAddressStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="1"
+            android:text=""
+            android:textColorHint="#555555" />
 
     </LinearLayout>
 
@@ -80,11 +74,25 @@
             android:textSize="20dp"
             android:text="도착점 :" />
 
-        <EditText
-            android:id="@+id/editTextGoal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10" />
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteAddressEnd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="1"
+            android:text=""
+            android:textColorHint="#555555" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:orientation="horizontal">
+
     </LinearLayout>
 
     <LinearLayout
