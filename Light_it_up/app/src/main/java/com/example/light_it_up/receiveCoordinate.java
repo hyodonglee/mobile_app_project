@@ -91,7 +91,6 @@ public class receiveCoordinate {
             @Override
             public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
 
-
                 String body = response.body().string();
                 Log.d("Main", "서버에서 응답한 Body:" + body);
 

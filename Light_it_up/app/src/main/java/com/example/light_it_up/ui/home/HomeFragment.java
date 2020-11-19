@@ -54,6 +54,8 @@ public class HomeFragment extends Fragment {
     Button gps;
     Button findRoad;
 
+    static receiveCoordinate receive;
+
     static ArrayList<String> searchListStart= new ArrayList<>();
     static ArrayList<String> searchListEnd = new ArrayList<>();
 
@@ -62,6 +64,9 @@ public class HomeFragment extends Fragment {
 
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
+
+    static boolean viewRoadCheck=false;
+    static boolean viewRoadLightCheck=false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -153,9 +158,6 @@ public class HomeFragment extends Fragment {
         findRoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                autoCompleteTextViewStart = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressStart);
-                autoCompleteTextViewEnd = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressEnd);
-
                 String textStart = autoCompleteTextViewStart.getText().toString();
                 String textGoal = autoCompleteTextViewEnd.getText().toString();
 
@@ -175,9 +177,10 @@ public class HomeFragment extends Fragment {
                 stG.nextToken();
                 double endX=Double.parseDouble(stG.nextToken());
 
+                viewRoadCheck=true;
                 setMarker(startX,startY,endX,endY);
 
-                receiveCoordinate receive = new receiveCoordinate(tMapView);
+                receive = new receiveCoordinate(tMapView);
                 receive.sendData(startX,startY,endX,endY);
                 }
         });
