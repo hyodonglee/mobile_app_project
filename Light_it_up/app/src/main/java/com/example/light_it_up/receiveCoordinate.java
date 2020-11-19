@@ -38,7 +38,7 @@ public class receiveCoordinate {
             return instance;
         }
 
-        receiveCoordinate(TMapView mapview){
+        public receiveCoordinate(TMapView mapview){
             TMapView=mapview;
         }
 

@@ -1,137 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.light_it_up.ui.home.HomeFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="390sp"
-        android:layout_below="@+id/search"
-        android:id="@+id/map">
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+
+
+        <TextView
+            android:id="@+id/textStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="출발점 : " />
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteAddressStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="1"
+            android:text=""
+            android:textColorHint="#555555" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/textGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="도착점 :" />
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteAddressEnd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionHint="검색어를 입력하세요."
+            android:completionThreshold="1"
+            android:text=""
+            android:textColorHint="#555555" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_sub1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fab_sub2"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#009688"
+        android:layout_gravity="bottom|right"
         android:src="@drawable/ic_alert"
-        android:visibility="visible"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
+        android:layout_marginBottom="10dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_sub2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fab_main"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#009688"
+        android:layout_gravity="bottom|right"
         android:src="@drawable/ic_direction"
-        android:visibility="visible"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
+        android:layout_marginBottom="70dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#009688"
-        android:src="@drawable/ic_add"
-        app:borderWidth="0dp"
-        app:fabSize="normal" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/textSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:background="#A8ADB1"
-            android:textColor="#000000"
-            android:text="주소입력"/>
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteAddress"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="100sp"
-            android:layout_height="wrap_content"
-            android:textColorHint="#555555"
-            android:completionHint="검색어를 입력하세요."
-            android:completionThreshold="1"
-            android:text=""/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="60sp"
-        android:layout_below="@+id/map"
-        android:id="@+id/start"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textStart"
-            android:layout_width="wrap_content"
-            android:layout_height="60sp"
-            android:textSize="20dp"
-            android:text="출발점 : " />
-
-        <EditText
-            android:id="@+id/editTextStart"
-            android:layout_width="match_parent"
-            android:layout_toRightOf="@+id/textStart"
-            android:layout_height="match_parent"
-            android:ems="10" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:layout_below="@+id/start"
-        android:id="@+id/des"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="60sp"
-            android:textSize="20dp"
-            android:text="도착점 :" />
-
-        <EditText
-            android:id="@+id/editTextGoal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/textGoal"
-            android:ems="10" />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70sp"
         android:id="@+id/last"
-        android:layout_below="@+id/des"
+        android:layout_below="@+id/layoutMap"
         android:orientation="horizontal">
 
         <Button
@@ -146,10 +108,10 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_toRightOf="@+id/btn_findRoad"
+            android:layout_toEndOf="@+id/btn_findRoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60sp"
+            android:layout_marginStart="60sp"
             android:textSize="20dp"
             android:textStyle="bold"
             android:text="GPS" />
@@ -157,4 +119,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

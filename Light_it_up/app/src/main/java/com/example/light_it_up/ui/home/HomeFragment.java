@@ -8,16 +8,16 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -35,49 +35,83 @@ import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import com.example.light_it_up.*;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     static View view;
-    RelativeLayout mapView;
+    LinearLayout mapView;
     static TMapView tMapView;
-    static List<String> serchList = new ArrayList<String>();
+
     String apiKey = "l7xx9e4f453a79804608bc16947e4ed09909";
-    FloatingActionButton fab_main, fab_sub1, fab_sub2;
-    Animation fab_open, fab_close;
-    Boolean openFlag = false;
+    FloatingActionButton fab_sub1, fab_sub2;
+
     Button gps;
-    Button findroad;
+    Button findRoad;
+
+    static ArrayList<String> searchListStart= new ArrayList<>();
+    static ArrayList<String> searchListEnd = new ArrayList<>();
+
+    static HashMap<String,String> poiMapStart = new HashMap<>();
+    static HashMap<String,String> poiMapEnd = new HashMap<>();
+
+    static AutoCompleteTextView autoCompleteTextViewStart;
+    static AutoCompleteTextView autoCompleteTextViewEnd;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mapView = (RelativeLayout) view.findViewById(R.id.map);
-        fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+        mapView = (LinearLayout) view.findViewById(R.id.layoutMap);
 
-        fab_main = (FloatingActionButton) view.findViewById(R.id.fab_main);
+
         fab_sub1 = (FloatingActionButton) view.findViewById(R.id.fab_sub1);
         fab_sub2 = (FloatingActionButton) view.findViewById(R.id.fab_sub2);
 
-        fab_sub1.startAnimation(fab_close);
-        fab_sub2.startAnimation(fab_close);
-        fab_sub1.setClickable(false);
-        fab_sub2.setClickable(false);
-        openFlag = false;
-        // 초반 클릭하기 전에 메뉴바 숨기기 위한 코
-
-        setList("대구");
-        setList("경북대학교 IT");
-
-        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddress);
-
         // AutoCompleteTextView 에 아답터를 연결한다.
-        autoCompleteTextView.setAdapter(new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_dropdown_item_1line, serchList ));
+        autoCompleteTextViewStart = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressStart);
+        autoCompleteTextViewEnd = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressEnd);
+
+        autoCompleteTextViewStart.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setList(s.toString(),searchListStart,poiMapStart);
+                autoCompleteTextViewStart.setAdapter(new ArrayAdapter<>(getContext(),
+                        android.R.layout.simple_dropdown_item_1line, searchListStart));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        autoCompleteTextViewEnd.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setList(s.toString(),searchListEnd,poiMapEnd);
+                autoCompleteTextViewEnd.setAdapter(new ArrayAdapter<>(getContext(),
+                        android.R.layout.simple_dropdown_item_1line, searchListEnd));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         gps = view.findViewById(R.id.button);
         gps.setOnClickListener(new View.OnClickListener() {
@@ -115,47 +149,40 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        findroad = view.findViewById(R.id.btn_findRoad);
-        findroad.setOnClickListener(new View.OnClickListener() {
+        findRoad = view.findViewById(R.id.btn_findRoad);
+        findRoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editTextStart = view.findViewById(R.id.editTextStart);
-                EditText editTextGoal = view.findViewById(R.id.editTextGoal);
+                autoCompleteTextViewStart = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressStart);
+                autoCompleteTextViewEnd = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressEnd);
 
-                if(editTextStart.getText()==null){
-                    //error handling
+                String textStart = autoCompleteTextViewStart.getText().toString();
+                String textGoal = autoCompleteTextViewEnd.getText().toString();
+
+
+                String LocationStart=convertToLocation(textStart,1);
+                String LocationEnd=convertToLocation(textGoal,2);
+
+                StringTokenizer stS = new StringTokenizer(LocationStart);
+                StringTokenizer stG = new StringTokenizer(LocationEnd);
+
+                stS.nextToken();
+                double startY=Double.parseDouble(stS.nextToken());
+                stS.nextToken();
+                double startX=Double.parseDouble(stS.nextToken());
+                stG.nextToken();
+                double endY=Double.parseDouble(stG.nextToken());
+                stG.nextToken();
+                double endX=Double.parseDouble(stG.nextToken());
+
+                setMarker(startX,startY,endX,endY);
+
+                receiveCoordinate receive = new receiveCoordinate(tMapView);
+                receive.sendData(startX,startY,endX,endY);
                 }
-
-                else if(editTextGoal.getText()==null){
-
-                }
-
-                else {
-                    String textStart = editTextStart.getText().toString();
-                    String textGoal = editTextGoal.getText().toString();
-                    StringTokenizer stS = new StringTokenizer(textStart);
-                    StringTokenizer stG = new StringTokenizer(textGoal);
-
-                    double startX = Double.parseDouble(stS.nextToken());
-                    double startY = Double.parseDouble(stS.nextToken());
-                    double endX = Double.parseDouble(stG.nextToken());
-                    double endY = Double.parseDouble(stG.nextToken());
-
-                    setMarker(startX, startY, endX, endY);
-
-                    receiveCoordinate receive = new receiveCoordinate();
-                    drawLine(receive.sendData(startX, startY, endX, endY));
-                }
-            }
         });
 
         //버튼 클릭 리스너
-        fab_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                anim();
-            }
-        });
 
         fab_sub1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,24 +220,39 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    public String convertToLocation(String address,int option){
+
+
+        if(option==1){ // start
+            if(poiMapStart.containsKey(address))
+                return poiMapStart.get(address);
+
+        }
+        else if(option==2){ // end
+            if(poiMapEnd.containsKey(address))
+                return poiMapEnd.get(address);
+        }
+
+        return null;
+    }
 
 
 
-    public static void setList(String search){
+
+    public static void setList(String search, ArrayList<String> addlist, HashMap<String,String> hashMap){
 
 
         TMapData tmapdata = new TMapData();
-
 
         tmapdata.findAllPOI(search, new TMapData.FindAllPOIListenerCallback() {
             @Override
             public void onFindAllPOI(ArrayList poiItem) {
                 for(int i = 0; i < poiItem.size(); i++) {
-                    TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
-                    serchList.add(item.getPOIName());
-//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-//                            "Point: " + item.getPOIPoint().toString());
+                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
+                    if(addlist.contains(item.getPOIName()))
+                        continue;
+                    addlist.add(item.getPOIName());
+                    hashMap.put(item.getPOIName().toString(),item.getPOIPoint().toString());
                 }
             }
         });
@@ -218,26 +260,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void findRoadClick(View view) throws Exception {
-        EditText editTextStart = (EditText) view.findViewById(R.id.editTextStart);
-        EditText editTextGoal = (EditText) view.findViewById(R.id.editTextGoal);
-
-        String textStart = editTextStart.getText().toString();
-        String textGoal = editTextGoal.getText().toString();
-
-        StringTokenizer stS = new StringTokenizer(textStart);
-        StringTokenizer stG = new StringTokenizer(textGoal);
-
-        double startX=Double.parseDouble(stS.nextToken());
-        double startY=Double.parseDouble(stS.nextToken());
-        double endX=Double.parseDouble(stG.nextToken());
-        double endY=Double.parseDouble(stG.nextToken());
-
-        setMarker(startX,startY,endX,endY);
-
-        receiveCoordinate receive = new receiveCoordinate();
-        drawLine(receive.sendData(startX,startY,endX,endY));
-    }
 
     public void setMarker(double startX,double startY,double endX,double endY){
         TMapMarkerItem markerItem1 = new TMapMarkerItem();
@@ -264,53 +286,5 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void drawLine(ArrayList<TMapPoint> pointList){
-        TMapPolyLine tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.BLUE);
-        tMapPolyLine.setLineWidth(2);
 
-        for( int i=0; i<pointList.size(); i++ ) {
-            tMapPolyLine.addLinePoint( pointList.get(i) );
-        }
-
-        tMapView.addTMapPolyLine("Line1", tMapPolyLine);
-
-    }
-
-    private void anim() {
-        if (openFlag) {
-            fab_sub1.startAnimation(fab_close);
-            fab_sub2.startAnimation(fab_close);
-            fab_sub1.setClickable(false);
-            fab_sub2.setClickable(false);
-            openFlag = false;
-        } else {
-            fab_sub1.startAnimation(fab_open);
-            fab_sub2.startAnimation(fab_open);
-            fab_sub1.setClickable(true);
-            fab_sub2.setClickable(true);
-            openFlag = true;
-        }
-    }
 }
-
-//    public void serachAddress(View view) {
-//
-//        EditText seraching = (EditText) findViewById(R.id.editTextAddress);
-//        String strData = seraching.getText().toString();
-//
-//        TMapData tmapdata = new TMapData();
-//
-//        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
-//            @Override
-//            public void onFindAllPOI(ArrayList poiItem) {
-//                for(int i = 0; i < poiItem.size(); i++) {
-//                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-//                            "Point: " + item.getPOIPoint().toString());
-//                }
-//            }
-//        });
-//
-//    }
