@@ -22,9 +22,17 @@ public class Main {
         // 특정 구간 주위의 가로등, 보안등 좌표 획득
         ArrayList<Request.Coord> aroundLamps = AroundLampSearch.aroundLamps(1, 7, req.coordinates, req.roadBound, req.roadInPath, req.streetBound, req.streetInPath);
 
-        System.out.println("\n\n특정 노드 [1 ~ 7] 주변 가로등, 보안등 좌표");
-        for (int i = 0; i < aroundLamps.size(); i++) {
-            System.out.println(aroundLamps.get(i).first() + " " + aroundLamps.get(i).second());
-        }
+        // 처음으로 우회해야할 지점의 시작점과 끝점
+        map.Request.Coord fds = req.firstDetourStart;
+        map.Request.Coord fde = req.firstDetourEnd;
+
+        System.out.println("\n우회해야할 경로 구간입니다.");
+        System.out.println(fds.first() + " " + fds.second() + "부터 " + fde.first() + " " + fde.second());
+
+//        System.out.println("\n\n특정 노드 [1 ~ 7] 주변 가로등, 보안등 좌표");
+//        for (int i = 0; i < aroundLamps.size(); i++) {
+//            System.out.println(aroundLamps.get(i).first() + " " + aroundLamps.get(i).second());
+//        }
     }
 }
+
