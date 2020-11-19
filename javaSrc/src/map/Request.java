@@ -43,7 +43,9 @@ public class Request {
 
     public static Request.Coord firstDetourStart;
     public static Request.Coord firstDetourEnd;
-
+    public static int firstDetourStartIndex;
+    public static int firstDetourEndIndex;
+    public static boolean isDetour = false;
     public static void requestAPI(String startX, String startY, String endX, String endY) throws Exception {
         // sample coordinates from start to end
 //        startX = "35.897428";
@@ -223,6 +225,7 @@ public class Request {
                 int lampSum = streetLampCount + roadLampCount;
 
                 if (lampSum< 2) {
+                    isDetour = true;
                     System.out.println("탐색하면 안되는 길 입니다.");
                     if(firstPoint)
                     {
@@ -231,6 +234,8 @@ public class Request {
 
                         firstDetourStart = new Coord(coordinates.get(startPoint + 1).first(), coordinates.get(startPoint + 1).second());
                         firstDetourEnd = new Coord(coordinates.get(i + 2).first(), coordinates.get(i + 2).second());
+                        firstDetourStartIndex = startPoint + 1;
+                        firstDetourEndIndex = i + 2;
                         firstPoint = false;
                     }
                 }
