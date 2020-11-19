@@ -39,8 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
-
+import static java.lang.Thread.sleep;
 
 
 public class viewHome extends AppCompatActivity {
@@ -56,9 +55,7 @@ public class viewHome extends AppCompatActivity {
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
 
-    public static TMapView getMapView() {
-        return tMapView;
-    }
+
 
 
     @Override
@@ -130,10 +127,6 @@ public class viewHome extends AppCompatActivity {
                         continue;
                     addlist.add(item.getPOIName());
                     hashMap.put(item.getPOIName().toString(),item.getPOIPoint().toString());
-
-                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-                            "Point: " + item.getPOIPoint().toString());
                 }
             }
         });
@@ -166,8 +159,9 @@ public class viewHome extends AppCompatActivity {
 
         setMarker(startX,startY,endX,endY);
 
-        receiveCoordinate receive = new receiveCoordinate();
-        drawLine(receive.sendData(startX,startY,endX,endY));
+        receiveCoordinate receive = new receiveCoordinate(tMapView);
+        receive.sendData(startX,startY,endX,endY);
+
     }
 
     public String convertToLocation(String address,int option){
@@ -208,21 +202,6 @@ public class viewHome extends AppCompatActivity {
         markerItem2.setTMapPoint( tMapPoint2 ); // 마커의 좌표 지정
         markerItem2.setName("도"); // 마커의 타이틀 지정
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
-
-    }
-
-
-
-    public void drawLine(ArrayList<TMapPoint> pointList){
-        TMapPolyLine tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.BLUE);
-        tMapPolyLine.setLineWidth(4);
-
-        for( int i=0; i<pointList.size(); i++ ) {
-            tMapPolyLine.addLinePoint( pointList.get(i) );
-        }
-
-        tMapView.addTMapPolyLine("Line", tMapPolyLine);
 
     }
 
