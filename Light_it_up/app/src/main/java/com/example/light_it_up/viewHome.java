@@ -35,6 +35,7 @@ import com.skt.Tmap.TMapView;
 import java.util.ArrayList;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -48,6 +49,9 @@ public class viewHome extends AppCompatActivity {
     static TMapView tMapView;
     static ArrayList<String> searchListStart= new ArrayList<>();
     static ArrayList<String> searchListEnd = new ArrayList<>();
+
+    static HashMap<String,String> poiMapStart = new HashMap<>();
+    static HashMap<String,String> poiMapEnd = new HashMap<>();
 
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
@@ -79,13 +83,14 @@ public class viewHome extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setList(s.toString(),searchListStart);
+                setList(s.toString(),searchListStart,poiMapStart);
                 autoCompleteTextViewStart.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                         android.R.layout.simple_dropdown_item_1line, searchListStart));
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -97,7 +102,7 @@ public class viewHome extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setList(s.toString(),searchListEnd);
+                setList(s.toString(),searchListEnd,poiMapEnd);
                 autoCompleteTextViewEnd.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                         android.R.layout.simple_dropdown_item_1line, searchListEnd));
             }
@@ -111,7 +116,7 @@ public class viewHome extends AppCompatActivity {
 
 
 
-    public static void setList(String search,ArrayList<String> addlist){
+    public static void setList(String search, ArrayList<String> addlist, HashMap<String,String> hashMap){
 
 
         TMapData tmapdata = new TMapData();
@@ -124,6 +129,8 @@ public class viewHome extends AppCompatActivity {
                     if(addlist.contains(item.getPOIName()))
                         continue;
                     addlist.add(item.getPOIName());
+                    hashMap.put(item.getPOIName().toString(),item.getPOIPoint().toString());
+
                     Log.d("POI Name: ", item.getPOIName().toString() + ", " +
                             "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
                             "Point: " + item.getPOIPoint().toString());
@@ -135,24 +142,48 @@ public class viewHome extends AppCompatActivity {
     }
 
     public void findRoadClick(View view) throws Exception {
-        EditText editTextStart = (EditText) findViewById(R.id.editTextStart);
-        EditText editTextGoal = (EditText) findViewById(R.id.editTextGoal);
+        autoCompleteTextViewStart = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressStart);
+        autoCompleteTextViewEnd = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressEnd);
 
-        String textStart = editTextStart.getText().toString();
-        String textGoal = editTextGoal.getText().toString();
+        String textStart = autoCompleteTextViewStart.getText().toString();
+        String textGoal = autoCompleteTextViewEnd.getText().toString();
 
-        StringTokenizer stS = new StringTokenizer(textStart);
-        StringTokenizer stG = new StringTokenizer(textGoal);
 
-        double startX=Double.parseDouble(stS.nextToken());
+        String LocationStart=convertToLocation(textStart,1);
+        String LocationEnd=convertToLocation(textGoal,2);
+
+        StringTokenizer stS = new StringTokenizer(LocationStart);
+        StringTokenizer stG = new StringTokenizer(LocationEnd);
+
+        stS.nextToken();
         double startY=Double.parseDouble(stS.nextToken());
-        double endX=Double.parseDouble(stG.nextToken());
+        stS.nextToken();
+        double startX=Double.parseDouble(stS.nextToken());
+        stG.nextToken();
         double endY=Double.parseDouble(stG.nextToken());
+        stG.nextToken();
+        double endX=Double.parseDouble(stG.nextToken());
 
         setMarker(startX,startY,endX,endY);
 
         receiveCoordinate receive = new receiveCoordinate();
         drawLine(receive.sendData(startX,startY,endX,endY));
+    }
+
+    public String convertToLocation(String address,int option){
+
+
+        if(option==1){ // start
+            if(poiMapStart.containsKey(address))
+                return poiMapStart.get(address);
+
+        }
+        else if(option==2){ // end
+            if(poiMapEnd.containsKey(address))
+                return poiMapEnd.get(address);
+        }
+
+        return null;
     }
 
     public void setMarker(double startX,double startY,double endX,double endY){
@@ -185,15 +216,13 @@ public class viewHome extends AppCompatActivity {
     public void drawLine(ArrayList<TMapPoint> pointList){
         TMapPolyLine tMapPolyLine = new TMapPolyLine();
         tMapPolyLine.setLineColor(Color.BLUE);
-        tMapPolyLine.setLineWidth(2);
+        tMapPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {
             tMapPolyLine.addLinePoint( pointList.get(i) );
         }
 
-        tMapView.addTMapPolyLine("Line1", tMapPolyLine);
-
-
+        tMapView.addTMapPolyLine("Line", tMapPolyLine);
 
     }
 
