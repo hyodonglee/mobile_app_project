@@ -46,20 +46,16 @@ public class viewHome extends AppCompatActivity {
 
 
     static TMapView tMapView;
-    static List<String> searchList= new ArrayList<>();
-    static List<String> tempsearchList = new ArrayList<>();
-    static AutoCompleteTextView autoCompleteTextView;
+    static ArrayList<String> searchListStart= new ArrayList<>();
+    static ArrayList<String> searchListEnd = new ArrayList<>();
 
+    static AutoCompleteTextView autoCompleteTextViewStart;
+    static AutoCompleteTextView autoCompleteTextViewEnd;
 
     public static TMapView getMapView() {
         return tMapView;
     }
 
-    public static List<String> getSerchList() {
-        return searchList;
-    }
-
-    public static AutoCompleteTextView getAutoCompleteTextView(){ return autoCompleteTextView;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,36 +68,50 @@ public class viewHome extends AppCompatActivity {
         linearLayoutTmap.addView(tMapView);
 
 
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddress);
+        autoCompleteTextViewStart = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressStart);
+        autoCompleteTextViewEnd = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressEnd);
 
-
-        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            //AsyncaddList asyncadd;
+        autoCompleteTextViewStart.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //asyncadd = new AsyncaddList();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setList(s.toString());
-                searchList=tempsearchList;
-                autoCompleteTextView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
-                        android.R.layout.simple_dropdown_item_1line, tempsearchList));
+                setList(s.toString(),searchListStart);
+                autoCompleteTextViewStart.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                        android.R.layout.simple_dropdown_item_1line, searchListStart));
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
 
+        autoCompleteTextViewEnd.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setList(s.toString(),searchListEnd);
+                autoCompleteTextViewEnd.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                        android.R.layout.simple_dropdown_item_1line, searchListEnd));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 
     }
 
 
-    
-    public static void setList(String search){
+
+    public static void setList(String search,ArrayList<String> addlist){
 
 
         TMapData tmapdata = new TMapData();
@@ -111,7 +121,9 @@ public class viewHome extends AppCompatActivity {
             public void onFindAllPOI(ArrayList poiItem) {
                 for(int i = 0; i < poiItem.size(); i++) {
                     TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-                    tempsearchList.add(item.getPOIName());
+                    if(addlist.contains(item.getPOIName()))
+                        continue;
+                    addlist.add(item.getPOIName());
                     Log.d("POI Name: ", item.getPOIName().toString() + ", " +
                             "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
                             "Point: " + item.getPOIPoint().toString());
