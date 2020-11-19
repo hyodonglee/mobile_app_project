@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
+import com.skt.Tmap.TMapView;
+
+
 
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
@@ -23,8 +26,10 @@ import okhttp3.RequestBody;
 
 public class receiveCoordinate {
 
-        ArrayList<Coord> coordinates = new ArrayList<Coord>();
+
         ArrayList<TMapPoint> pointList = new ArrayList<TMapPoint>();
+
+        TMapView TMapView;
 
         private receiveCoordinate httpConn = receiveCoordinate.getInstance();
         private static OkHttpClient client;
@@ -33,16 +38,24 @@ public class receiveCoordinate {
             return instance;
         }
 
+        receiveCoordinate(TMapView mapview){
+            TMapView=mapview;
+        }
+
 
         public ArrayList<TMapPoint> sendData(Double startX,Double startY,Double endX,Double endY) {
-            new Thread() {
-                public void run() {
-                    httpConn.requestWebServer(startX,startY,endX,endY,callback);
-                }
-            }.start();;
+            postThread request = new postThread(startX,startY,endX,endY);
+            request.run();
 
+            try{
+                request.join();
+            }
+            catch(Exception e){
+
+            }
             return pointList;
         }
+
 
         public receiveCoordinate(){ this.client = new OkHttpClient(); }
 
@@ -92,18 +105,18 @@ public class receiveCoordinate {
                             for (int j = 0; j < coords.size(); ++j) {
                                 JSONArray vertex = (JSONArray) coords.get(j);
                                 Coord coord = new Coord(vertex.get(0).toString(), vertex.get(1).toString());
-                                coordinates.add(coord);
-                                pointList.add(new TMapPoint(Double.parseDouble(vertex.get(1).toString()),Double.parseDouble(vertex.get(0).toString())));
-
+                                pointList.add(new TMapPoint(Double.parseDouble(coord.second()),Double.parseDouble(coord.first())));
                             }
                         }
                     }
 
+                    drawLine(pointList);
 
 
-                    for (Coord coord : coordinates) {
-                        System.out.println(coord.first() + " " + coord.second());
-                    }
+
+//                    for (Coord coord : coordinates) {
+//                        System.out.println(coord.first() + " " + coord.second());
+//                    }
 
 
 
@@ -114,19 +127,41 @@ public class receiveCoordinate {
             }
 
 
-
-
-
-
             @Override
             public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
                 Log.d("Main", "콜백오류:"+e.getMessage());
             }
+
+            public void drawLine(ArrayList<TMapPoint> pointList){
+
+                TMapPolyLine tMapPolyLine = new TMapPolyLine();
+                tMapPolyLine.setLineColor(Color.BLUE);
+                tMapPolyLine.setLineWidth(4);
+
+                for( int i=0; i<pointList.size(); i++ ) {
+                    tMapPolyLine.addLinePoint( pointList.get(i) );
+                }
+
+                TMapView.addTMapPolyLine("Line1", tMapPolyLine);
+            }
         };
 
 
+    private class postThread extends Thread {
 
+        Double startX,startY,endX,endY;
 
+        postThread(Double startX, Double startY, Double endX, Double endY){
+            this.startX=startX;
+            this.startY=startY;
+            this.endX=endX;
+            this.endY=endY;
+        }
+
+        public void run() {
+            httpConn.requestWebServer(startX, startY, endX, endY, callback);
+        }
+    }
 
 
         private static class Coord {
