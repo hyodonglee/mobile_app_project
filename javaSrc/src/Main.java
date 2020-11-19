@@ -14,6 +14,8 @@ public class Main {
         String endX = "35.901257";
         String endY = "128.607252";
         test(startX, startY, endX, endY);
+        for(Request.Coord elem : ansList)
+            System.out.println("[" + elem.second() + ", " + elem.first() + "], ");
 //        Request req = new Request();
 //
 //        String startX = "35.897428";
@@ -90,8 +92,8 @@ public class Main {
         ArrayList<Request.Coord> aroundLamps = AroundLampSearch.aroundLamps(req.firstDetourStartIndex, req.firstDetourEndIndex, req.coordinates, req.roadBound, req.roadInPath, req.streetBound, req.streetInPath);
 
         // 가장 가까운 가로등 좌표
-        Request.Coord nextLamp = lamp.shortestLamp.findShortestLamp(fds, aroundLamps);
-        System.out.println();
+        Request.Coord nextLamp = lamp.shortestLamp.findShortestLamp(fds, req.roadInPath, req.streetInPath, aroundLamps);
+        //System.out.println();
 
         if(req.isDetour)
         {
@@ -99,7 +101,7 @@ public class Main {
             Request reqMidPath = new Request();
             reqMidPath.requestAPI(fds.first(), fds.second(), nextLamp.first(), nextLamp.second());
             ansList.addAll(reqMidPath.coordinates);
-            test(nextLamp.first(), nextLamp.second(), endX, endY);
+            //test(nextLamp.first(), nextLamp.second(), endX, endY);
         }
         else{
             ansList.addAll(req.coordinates);
