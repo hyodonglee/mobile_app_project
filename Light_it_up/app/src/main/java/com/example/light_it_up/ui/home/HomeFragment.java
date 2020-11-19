@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     Button gps;
     Button findRoad;
 
+
     Button showroad;
     static int showroad_option;
 
@@ -182,6 +183,7 @@ public class HomeFragment extends Fragment {
 
                 viewRoadCheck=true;
                 setMarker(startX,startY,endX,endY);
+
                 tMapView.zoomToSpan(Math.abs(startY-endY),Math.abs(startX-endX));
                 receive = new receiveCoordinate(tMapView);
                 receive.sendData(startX,startY,endX,endY);
