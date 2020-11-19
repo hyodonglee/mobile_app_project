@@ -45,6 +45,8 @@ import static java.lang.Thread.sleep;
 public class viewHome extends AppCompatActivity {
 
 
+    static receiveCoordinate receive;
+
     static TMapView tMapView;
     static ArrayList<String> searchListStart= new ArrayList<>();
     static ArrayList<String> searchListEnd = new ArrayList<>();
@@ -54,6 +56,9 @@ public class viewHome extends AppCompatActivity {
 
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
+
+    static boolean viewRoadCheck=false;
+    static boolean viewRoadLightCheck=false;
 
 
 
@@ -134,6 +139,8 @@ public class viewHome extends AppCompatActivity {
 
     }
 
+
+
     public void findRoadClick(View view) throws Exception {
         autoCompleteTextViewStart = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressStart);
         autoCompleteTextViewEnd = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressEnd);
@@ -157,10 +164,14 @@ public class viewHome extends AppCompatActivity {
         stG.nextToken();
         double endX=Double.parseDouble(stG.nextToken());
 
+        viewRoadCheck=true;
         setMarker(startX,startY,endX,endY);
-
-        receiveCoordinate receive = new receiveCoordinate(tMapView);
+        tMapView.zoomToSpan(Math.abs(startY-endY),Math.abs(startX-endX));
+        receive = new receiveCoordinate(tMapView);
         receive.sendData(startX,startY,endX,endY);
+
+        // 여기 위는 일반 가로등 찾기 기
+
 
     }
 
@@ -244,6 +255,33 @@ public class viewHome extends AppCompatActivity {
     }
 
 
+    public void showLoad(View view,int option) {
+
+        final int normal=1;
+        final int light=2;
+
+        if(option==normal) {
+            if (viewRoadCheck) { // on
+                receive.deleteRoadLine();
+                viewRoadCheck = false;
+            } else { // off
+                receive.redrawRoadLine();
+                viewRoadCheck = true;
+            }
+        }
+        else if(option==light){
+            if (viewRoadLightCheck) { // light on
+                //receive.deleteRoadLine();
+                viewRoadLightCheck = false;
+            } else { // light off
+                //receive.redrawRoadLine();
+                viewRoadLightCheck = true;
+            }
+
+        }
+
+    }
+    
 }
 
 

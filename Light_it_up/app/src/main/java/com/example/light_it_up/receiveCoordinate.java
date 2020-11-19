@@ -27,9 +27,12 @@ import okhttp3.RequestBody;
 public class receiveCoordinate {
 
 
+        ArrayList<TMapPoint> previousList = new ArrayList<>();
         ArrayList<TMapPoint> pointList = new ArrayList<TMapPoint>();
 
         TMapView TMapView;
+
+        TMapPolyLine tMapPolyLine;
 
         private receiveCoordinate httpConn = receiveCoordinate.getInstance();
         private static OkHttpClient client;
@@ -114,6 +117,7 @@ public class receiveCoordinate {
 
 
 
+
 //                    for (Coord coord : coordinates) {
 //                        System.out.println(coord.first() + " " + coord.second());
 //                    }
@@ -132,19 +136,31 @@ public class receiveCoordinate {
                 Log.d("Main", "콜백오류:"+e.getMessage());
             }
 
-            public void drawLine(ArrayList<TMapPoint> pointList){
 
-                TMapPolyLine tMapPolyLine = new TMapPolyLine();
-                tMapPolyLine.setLineColor(Color.BLUE);
-                tMapPolyLine.setLineWidth(4);
-
-                for( int i=0; i<pointList.size(); i++ ) {
-                    tMapPolyLine.addLinePoint( pointList.get(i) );
-                }
-
-                TMapView.addTMapPolyLine("Line1", tMapPolyLine);
-            }
         };
+
+    public void drawLine(ArrayList<TMapPoint> pointList){
+
+        tMapPolyLine = new TMapPolyLine();
+        tMapPolyLine.setLineColor(Color.BLUE);
+        tMapPolyLine.setLineWidth(4);
+
+        for( int i=0; i<pointList.size(); i++ ) {
+            tMapPolyLine.addLinePoint( pointList.get(i) );
+        }
+
+        TMapView.addTMapPolyLine("Line1", tMapPolyLine);
+    }
+
+    public void deleteRoadLine(){
+        previousList=tMapPolyLine.getLinePoint();
+        tMapPolyLine= new TMapPolyLine();
+        TMapView.addTMapPolyLine("Line1",tMapPolyLine);
+    }
+
+    public void redrawRoadLine(){
+        drawLine(previousList);
+    }
 
 
     private class postThread extends Thread {
