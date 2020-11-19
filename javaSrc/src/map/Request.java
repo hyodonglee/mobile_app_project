@@ -46,6 +46,7 @@ public class Request {
     public static int firstDetourStartIndex;
     public static int firstDetourEndIndex;
     public static boolean isDetour = false;
+
     public static void requestAPI(String startX, String startY, String endX, String endY) throws Exception {
         // sample coordinates from start to end
 //        startX = "35.897428";
@@ -113,9 +114,9 @@ public class Request {
                 }
 
                 // Print the saved coordinates in List
-                for(Coord coord: coordinates){
-                    System.out.println(coord.first() + " " + coord.second());
-                }
+//                for(Coord coord: coordinates){
+//                    System.out.println(coord.first() + " " + coord.second());
+//                }
 
             } catch (ParseException e){
                 e.printStackTrace();
@@ -147,7 +148,7 @@ public class Request {
 
             int temp_road = 0, temp_street = 0;
 
-            double baseDistance = 0.00025;// 약 25m
+            double baseDistance = 0.0005; //0.00025;// 약 25m
             partialDistance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2- y1, 2)) + partialDistance;
 
             /// 경계 내 보안등 좌표
@@ -218,19 +219,19 @@ public class Request {
             }
             streetLampCount += temp_street;
 
-            System.out.printf("[%d~%d] road_LampCount : %d , street_LampCount : %d\n",i+1,i+2,temp_road, temp_street);
+            //System.out.printf("[%d~%d] road_LampCount : %d , street_LampCount : %d\n",i+1,i+2,temp_road, temp_street);
             if (partialDistance >= baseDistance || i ==  coordinates.size() - 2)// i == len(coordinates[:-2])-1)
             {
-                System.out.printf("[node %d ~ %d] 가로등 갯수 : %d  보안등 갯수 : %d\n", startPoint + 1, i + 2, roadLampCount, streetLampCount);
+                //System.out.printf("[node %d ~ %d] 가로등 갯수 : %d  보안등 갯수 : %d\n", startPoint + 1, i + 2, roadLampCount, streetLampCount);
                 int lampSum = streetLampCount + roadLampCount;
 
                 if (lampSum< 2) {
                     isDetour = true;
-                    System.out.println("탐색하면 안되는 길 입니다.");
+                    //System.out.println("탐색하면 안되는 길 입니다.");
                     if(firstPoint)
                     {
-                        System.out.println(coordinates.get(startPoint + 1).first() + " " + coordinates.get(startPoint + 1).second());
-                        System.out.println(coordinates.get(i + 2).first() + " " + coordinates.get(i + 2).second());
+                        //System.out.println(coordinates.get(startPoint + 1).first() + " " + coordinates.get(startPoint + 1).second());
+                        //System.out.println(coordinates.get(i + 2).first() + " " + coordinates.get(i + 2).second());
 
                         firstDetourStart = new Coord(coordinates.get(startPoint + 1).first(), coordinates.get(startPoint + 1).second());
                         firstDetourEnd = new Coord(coordinates.get(i + 2).first(), coordinates.get(i + 2).second());
@@ -240,7 +241,7 @@ public class Request {
                     }
                 }
                 else
-                    System.out.println("지나가도 되는 길 입니다.");
+                    //System.out.println("지나가도 되는 길 입니다.");
 
                 partialDistance = 0;
                 streetLampCount = 0;

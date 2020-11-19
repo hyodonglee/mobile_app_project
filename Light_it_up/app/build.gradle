@@ -40,7 +40,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    //동영상추가
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-analytics'
 
     implementation "com.kakao.sdk:v2-user:2.0.5" // 카카오 로그인
     implementation "com.kakao.sdk:v2-talk:2.0.5" // 친구, 메시지(카카오톡)

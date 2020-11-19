@@ -10,10 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="horizontal">
-
-
 
         <TextView
             android:id="@+id/textStart"
@@ -32,13 +29,11 @@
             android:text=""
             android:textColorHint="#555555" />
 
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="horizontal">
 
 
@@ -46,7 +41,7 @@
             android:id="@+id/textGoal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="도착점 :" />
 
         <AutoCompleteTextView
@@ -64,59 +59,63 @@
     <LinearLayout
         android:id="@+id/layoutMap"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:layout_weight="8"
         android:orientation="horizontal">
 
     </LinearLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_sub1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:src="@drawable/ic_alert"
-        android:layout_marginBottom="10dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_sub2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:src="@drawable/ic_direction"
-        android:layout_marginBottom="70dp" />
-
-
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70sp"
-        android:id="@+id/last"
-        android:layout_below="@+id/layoutMap"
+        android:layout_height="0sp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_findRoad"
-            android:layout_width="200sp"
+            android:layout_width="0sp"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:background="#333E47"
             android:text="길찾기"
             android:textColor="#FF9800"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button"
-            android:layout_toEndOf="@+id/btn_findRoad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60sp"
-            android:textSize="20dp"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/report"
+            android:background="@drawable/ic_alert"/>
+
+        <Button
+            android:id="@+id/btn_GPS"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="GPS" />
 
+        <Button
+            android:id="@+id/btn_showLoad"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:text="최단경로" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/bnt_showLoadlight"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="가로등경로" />
+
+
+    </LinearLayout>
 
 </LinearLayout>
