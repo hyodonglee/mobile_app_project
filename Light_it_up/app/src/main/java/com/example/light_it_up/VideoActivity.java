@@ -8,7 +8,6 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Handler;
-import android.telephony.SmsManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
@@ -30,11 +29,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        SmsManager smsManager = SmsManager.getDefault();
-        String sendTo = "01090856697";
-        String myMessage = "help me";
-        smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
-        Toast.makeText(getBaseContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+
 
         camera = Camera.open();
         camera.setDisplayOrientation(90);
@@ -78,7 +73,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                                 e.printStackTrace();
                             }
                         }
-                    }, 300);
+                    }, 1000);
                 } catch (Exception e) {
                     Toast.makeText(VideoActivity.this, "error", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
