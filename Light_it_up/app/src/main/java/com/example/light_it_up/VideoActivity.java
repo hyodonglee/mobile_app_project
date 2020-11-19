@@ -73,7 +73,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                                 e.printStackTrace();
                             }
                         }
-                    }, 1000);
+                    }, 500);
                 } catch (Exception e) {
                     Toast.makeText(VideoActivity.this, "error", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

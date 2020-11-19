@@ -1,5 +1,5 @@
-import lamp.*;
-import map.*;
+import lamp.AroundLampSearch;
+import map.Request;
 
 import java.util.ArrayList;
 
