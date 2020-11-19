@@ -5,13 +5,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -42,12 +46,20 @@ public class viewHome extends AppCompatActivity {
 
 
     static TMapView tMapView;
-    static List<String> serchList = new ArrayList<String>();
+    static List<String> searchList= new ArrayList<>();
+    static List<String> tempsearchList = new ArrayList<>();
+    static AutoCompleteTextView autoCompleteTextView;
 
 
-    public static TMapView getMapView(){
+    public static TMapView getMapView() {
         return tMapView;
     }
+
+    public static List<String> getSerchList() {
+        return searchList;
+    }
+
+    public static AutoCompleteTextView getAutoCompleteTextView(){ return autoCompleteTextView;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +67,54 @@ public class viewHome extends AppCompatActivity {
         setContentView(R.layout.activity_view_home);
 
         LinearLayout linearLayoutTmap = (LinearLayout) findViewById(R.id.layoutMap);
-        tMapView=new TMapView(this);
+        tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("l7xx9e4f453a79804608bc16947e4ed09909");
         linearLayoutTmap.addView(tMapView);
 
 
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddress);
 
-        setList("대구");
-        setList("경북대학교 IT");
 
-        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddress);
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            //AsyncaddList asyncadd;
 
-        // AutoCompleteTextView 에 아답터를 연결한다.
-        autoCompleteTextView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, serchList ));
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //asyncadd = new AsyncaddList();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setList(s.toString());
+                searchList=tempsearchList;
+                autoCompleteTextView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                        android.R.layout.simple_dropdown_item_1line, tempsearchList));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
+
+    
     public static void setList(String search){
 
 
         TMapData tmapdata = new TMapData();
-
 
         tmapdata.findAllPOI(search, new TMapData.FindAllPOIListenerCallback() {
             @Override
             public void onFindAllPOI(ArrayList poiItem) {
                 for(int i = 0; i < poiItem.size(); i++) {
                     TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-                    serchList.add(item.getPOIName());
-//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-//                            "Point: " + item.getPOIPoint().toString());
+                    tempsearchList.add(item.getPOIName());
+                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+                            "Point: " + item.getPOIPoint().toString());
                 }
             }
         });
@@ -195,26 +224,6 @@ public class viewHome extends AppCompatActivity {
     }
 
 
-//    public void serachAddress(View view) {
-//
-//        EditText seraching = (EditText) findViewById(R.id.editTextAddress);
-//        String strData = seraching.getText().toString();
-//
-//        TMapData tmapdata = new TMapData();
-//
-//        tmapdata.findAllPOI(strData, new TMapData.FindAllPOIListenerCallback() {
-//            @Override
-//            public void onFindAllPOI(ArrayList poiItem) {
-//                for(int i = 0; i < poiItem.size(); i++) {
-//                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-//                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-//                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-//                            "Point: " + item.getPOIPoint().toString());
-//                }
-//            }
-//        });
-//
-//    }
 }
 
 
