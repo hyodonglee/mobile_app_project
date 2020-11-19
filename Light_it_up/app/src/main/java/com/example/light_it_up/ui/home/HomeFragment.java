@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,6 +160,14 @@ public class HomeFragment extends Fragment {
         fab_sub1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SmsManager smsManager = SmsManager.getDefault();
+                String sendTo = "01090856697";
+                String myMessage = "help me";
+                smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
+                Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+                // 긴급 메세지 신고 전송 기능 구현
+
                 Intent intent1 = new Intent(getActivity(), VideoActivity.class);
                 startActivity(intent1);
             }
