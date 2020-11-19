@@ -2,6 +2,8 @@ package com.example.light_it_up;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.hardware.Camera;
@@ -12,6 +14,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,7 +40,10 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-
+        //동영상 저장을 위해 추가한 부분
+        FirebaseApp.initializeApp(this);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
 
         camera = Camera.open();
         camera.setDisplayOrientation(90);
@@ -50,8 +64,11 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                     mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
                     mediaRecorder.setOrientationHint(90);
                     mediaRecorder.setOutputFile("/sdcard/1.mp4");
+                    //mediaRecorder.setOutputFile("android.resource://com.example.light_it_up/drawable/title.mp4");
                     mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
                     new Handler().postDelayed(new Runnable() {
+
+
                         @Override
                         public void run() {
                             try {
@@ -65,6 +82,28 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                                         mediaRecorder.release();
                                         camera.lock();
                                         onBackPressed();
+
+                                        //Uri file = Uri.parse("/sdcard/1.mp4");
+                                        //Uri file = Uri.parse("android.resource://com.example.light_it_up/drawable/title");
+                                        Uri file = Uri.fromFile(new File("/sdcard/1.mp4"));
+                                        StorageReference videosRef = storageRef.child("videos/" + file.getLastPathSegment());
+                                        UploadTask uploadTask = videosRef.putFile(file);
+
+
+                                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // Handle unsuccessful uploads
+                                            }
+                                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                                // ...
+                                            }
+                                        });
+
+
                                         finish();
                                     }
                                 }, 5000);
