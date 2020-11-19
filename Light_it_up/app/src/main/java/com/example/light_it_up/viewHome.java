@@ -46,6 +46,7 @@ public class viewHome extends AppCompatActivity {
 
 
     static receiveCoordinate receive;
+    static receiveCoordinateLight receiveLight;
 
     static TMapView tMapView;
     static ArrayList<String> searchListStart= new ArrayList<>();
@@ -166,6 +167,10 @@ public class viewHome extends AppCompatActivity {
         tMapView.zoomToSpan(Math.abs(startY-endY),Math.abs(startX-endX));
         receive = new receiveCoordinate(tMapView);
         receive.sendData(startX,startY,endX,endY);
+
+        receiveLight=new receiveCoordinateLight(tMapView);
+        receiveLight.sendDataLight(startX,startY,endX,endY);
+
 
         // 여기 위는 일반 가로등 찾기 기
 
