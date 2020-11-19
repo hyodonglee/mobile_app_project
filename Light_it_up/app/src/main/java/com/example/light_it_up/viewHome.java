@@ -168,7 +168,7 @@ public class viewHome extends AppCompatActivity {
         receive = new receiveCoordinate(tMapView);
         receive.sendData(startX,startY,endX,endY);
 
-        receiveLight=new receiveCoordinateLight(tMapView);
+        receiveLight=new receiveCoordinateLight(tMapView,getApplicationContext());
         receiveLight.sendDataLight(startX,startY,endX,endY);
 
 
@@ -215,6 +215,7 @@ public class viewHome extends AppCompatActivity {
         markerItem2.setTMapPoint( tMapPoint2 ); // 마커의 좌표 지정
         markerItem2.setName("도"); // 마커의 타이틀 지정
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
+
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.light_it_up;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -52,6 +53,7 @@ public class receiveCoordinateLight {
     public static Double endY;
 
 
+    public static Context context;
 
 
     ArrayList<TMapPoint> previousList = new ArrayList<>();
@@ -68,20 +70,21 @@ public class receiveCoordinateLight {
         return instance;
     }
 
-    public receiveCoordinateLight(TMapView mapview){
+    public receiveCoordinateLight(TMapView mapview,Context passcontext){
         TMapView=mapview;
+        context=passcontext;
         this.client = new OkHttpClient();
     }
 
 
-    public ArrayList<TMapPoint> sendDataLight(Double startX,Double startY,Double endX,Double endY) {
+    public ArrayList<TMapPoint> sendDataLight(Double passstartX,Double passstartY,Double passendX,Double passendY) {
 
-        this.startX=startX;
-        this.startY=startY;
-        this.endX=endX;
-        this.endY=endY;
+        this.startX=passstartX;
+        this.startY=passstartY;
+        this.endX=passendX;
+        this.endY=passendY;
 
-        postThread request = new postThread(this.startX,this.startY,this.endX,this.endY);
+        postThread request = new postThread();
         request.run();
 
         try{
@@ -147,7 +150,7 @@ public class receiveCoordinateLight {
                 e.printStackTrace();
             }
 
-            LampExtraction lamp = new LampExtraction();
+            LampExtraction lamp = new LampExtraction(context);
             boundLamp = lamp.getBoundCoord(startX, startY, endX, endY); // 경계 내부에 있는 (가로등, 보안등) 좌표 얻어옴.
             roadBound = boundLamp.get(0); // 경계 내부에 있는 가로등 좌표
             streetBound = boundLamp.get(1); // 경계 내부에 있는 보안등 좌표
@@ -164,7 +167,7 @@ public class receiveCoordinateLight {
             if(isDetour)
             {
                 ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
-                receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView);
+                receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView,context);
                 reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
                 ansList.addAll(reqMidPath.coordinates);
                 //test(nextLamp.first(), nextLamp.second(), endX, endY);
@@ -335,13 +338,10 @@ public class receiveCoordinateLight {
 
     private class postThread extends Thread {
 
-        Double startX,startY,endX,endY;
 
-        postThread(Double startX, Double startY, Double endX, Double endY){
-            this.startX=startX;
-            this.startY=startY;
-            this.endX=endX;
-            this.endY=endY;
+
+        postThread(){
+
         }
 
         public void run() {
