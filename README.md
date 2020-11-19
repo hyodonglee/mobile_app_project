@@ -5,7 +5,7 @@
 
 ## 📈 사용한 IDE 와 API
 
-<img src="https://user-images.githubusercontent.com/51476083/99686239-c2802000-2ac6-11eb-901b-a72429d44fc2.png"/>
+<img src="https://user-images.githubusercontent.com/51476083/99702311-f49a7d80-2ad8-11eb-8f75-929a82d4cfe5.png"/>
 
 ###### 사용한 Tool 및 API
 
