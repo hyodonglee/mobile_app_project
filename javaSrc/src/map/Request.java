@@ -41,6 +41,9 @@ public class Request {
     public static ArrayList<Request.Coord> roadBound;
     public static ArrayList<Request.Coord> streetBound;
 
+    public static Request.Coord firstDetourStart;
+    public static Request.Coord firstDetourEnd;
+
     public static void requestAPI(String startX, String startY, String endX, String endY) throws Exception {
         // sample coordinates from start to end
 //        startX = "35.897428";
@@ -130,6 +133,7 @@ public class Request {
         // 경로 탐색 가능 판단용 부분 변수
         int startPoint=0, roadLampCount=0, streetLampCount=0;
         double partialDistance = 0, targetX = 0, targetY = 0;
+        boolean firstPoint = true;
         // 다양한 수학적 연산이 가능한 클래스
         Calculate calculator = new Calculate();
 
@@ -218,8 +222,18 @@ public class Request {
                 System.out.printf("[node %d ~ %d] 가로등 갯수 : %d  보안등 갯수 : %d\n", startPoint + 1, i + 2, roadLampCount, streetLampCount);
                 int lampSum = streetLampCount + roadLampCount;
 
-                if (lampSum< 2)
+                if (lampSum< 2) {
                     System.out.println("탐색하면 안되는 길 입니다.");
+                    if(firstPoint)
+                    {
+                        System.out.println(coordinates.get(startPoint + 1).first() + " " + coordinates.get(startPoint + 1).second());
+                        System.out.println(coordinates.get(i + 2).first() + " " + coordinates.get(i + 2).second());
+
+                        firstDetourStart = new Coord(coordinates.get(startPoint + 1).first(), coordinates.get(startPoint + 1).second());
+                        firstDetourEnd = new Coord(coordinates.get(i + 2).first(), coordinates.get(i + 2).second());
+                        firstPoint = false;
+                    }
+                }
                 else
                     System.out.println("지나가도 되는 길 입니다.");
 
