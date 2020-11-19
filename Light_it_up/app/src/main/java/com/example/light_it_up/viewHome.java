@@ -142,9 +142,6 @@ public class viewHome extends AppCompatActivity {
 
 
     public void findRoadClick(View view) throws Exception {
-        autoCompleteTextViewStart = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressStart);
-        autoCompleteTextViewEnd = (AutoCompleteTextView) findViewById(R.id.autoCompleteAddressEnd);
-
         String textStart = autoCompleteTextViewStart.getText().toString();
         String textGoal = autoCompleteTextViewEnd.getText().toString();
 
@@ -254,7 +251,6 @@ public class viewHome extends AppCompatActivity {
 
     }
 
-
     public void showLoad(View view,int option) {
 
         final int normal=1;
@@ -281,7 +277,7 @@ public class viewHome extends AppCompatActivity {
         }
 
     }
-    
+
 }
 
 

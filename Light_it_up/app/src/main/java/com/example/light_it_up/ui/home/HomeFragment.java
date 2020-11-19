@@ -43,16 +43,22 @@ import com.example.light_it_up.*;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    static receiveCoordinate receive;
+
     static View view;
     LinearLayout mapView;
     static TMapView tMapView;
 
     String apiKey = "l7xx9e4f453a79804608bc16947e4ed09909";
-    FloatingActionButton fab_sub1, fab_sub2;
+    Button report;
 
     Button gps;
     Button findRoad;
+
+    Button showroad;
+    static int showroad_option;
+
+    Button showRoadLight;
 
     static ArrayList<String> searchListStart= new ArrayList<>();
     static ArrayList<String> searchListEnd = new ArrayList<>();
@@ -63,14 +69,16 @@ public class HomeFragment extends Fragment {
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
 
+    static boolean viewRoadCheck=false;
+    static boolean viewRoadLightCheck=false;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mapView = (LinearLayout) view.findViewById(R.id.layoutMap);
 
 
-        fab_sub1 = (FloatingActionButton) view.findViewById(R.id.fab_sub1);
-        fab_sub2 = (FloatingActionButton) view.findViewById(R.id.fab_sub2);
+        report = (Button) view.findViewById(R.id.report);
 
         // AutoCompleteTextView 에 아답터를 연결한다.
         autoCompleteTextViewStart = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressStart);
@@ -113,7 +121,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        gps = view.findViewById(R.id.button);
+        gps = view.findViewById(R.id.btn_GPS);
         gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,9 +161,6 @@ public class HomeFragment extends Fragment {
         findRoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                autoCompleteTextViewStart = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressStart);
-                autoCompleteTextViewEnd = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteAddressEnd);
-
                 String textStart = autoCompleteTextViewStart.getText().toString();
                 String textGoal = autoCompleteTextViewEnd.getText().toString();
 
@@ -175,16 +180,17 @@ public class HomeFragment extends Fragment {
                 stG.nextToken();
                 double endX=Double.parseDouble(stG.nextToken());
 
+                viewRoadCheck=true;
                 setMarker(startX,startY,endX,endY);
-
-                receiveCoordinate receive = new receiveCoordinate(tMapView);
+                tMapView.zoomToSpan(Math.abs(startY-endY),Math.abs(startX-endX));
+                receive = new receiveCoordinate(tMapView);
                 receive.sendData(startX,startY,endX,endY);
                 }
         });
 
         //버튼 클릭 리스너
 
-        fab_sub1.setOnClickListener(new View.OnClickListener() {
+        report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -200,12 +206,43 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        fab_sub2.setOnClickListener(new View.OnClickListener() {
+        showroad = (Button) view.findViewById(R.id.btn_showLoad);
+        showroad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "길찾기", Toast.LENGTH_SHORT).show();
+                final int normal=1;
+                final int light=2;
+
+                if(showroad_option==normal) {//option -> showroad_option static으로 선언해뒀다.
+                    if (viewRoadCheck) { // on
+                        receive.deleteRoadLine();
+                        viewRoadCheck = false;
+                    } else { // off
+                        receive.redrawRoadLine();
+                        viewRoadCheck = true;
+                    }
+                }
+                else if(showroad_option==light){
+                    if (viewRoadLightCheck) { // light on
+                        //receive.deleteRoadLine();
+                        viewRoadLightCheck = false;
+                    } else { // light off
+                        //receive.redrawRoadLine();
+                        viewRoadLightCheck = true;
+                    }
+
+                }
             }
         });
+
+        showRoadLight = (Button) view.findViewById(R.id.btn_showLoad);
+        showRoadLight.setOnClickListener(new View.OnClickListener() {//가로등경로 리스너
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
         tMapView = new TMapView(getActivity());
         tMapView.setHttpsMode(true);
@@ -285,6 +322,5 @@ public class HomeFragment extends Fragment {
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
 
     }
-
 
 }
