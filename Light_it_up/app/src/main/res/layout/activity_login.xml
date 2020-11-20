@@ -4,21 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#17375E"
+    android:background="#FF2A2828"
+    android:backgroundTint="#232324"
     android:orientation="vertical"
     tools:context=".Login">
 
+<ImageView
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="170dp"
+    android:src="@drawable/title_light"/>
+
     <ImageView
-        android:layout_width="255dp"
-        android:layout_height="88dp"
+        android:layout_width="300dp"
+        android:layout_height="130dp"
         android:layout_gravity="center"
-        android:layout_marginTop="100sp"
+        android:background="#232323"
         android:src="@drawable/title" />
 
     <com.kakao.usermgmt.LoginButton
         android:layout_width="360sp"
         android:layout_height="match_parent"
-        android:layout_marginTop="300sp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="250dp" />
 
 </LinearLayout>
