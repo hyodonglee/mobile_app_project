@@ -62,17 +62,17 @@ public class HomeFragment extends Fragment {
 
     Button showRoadLight;
 
-    static ArrayList<String> searchListStart= new ArrayList<>();
+    static ArrayList<String> searchListStart = new ArrayList<>();
     static ArrayList<String> searchListEnd = new ArrayList<>();
 
-    static HashMap<String,String> poiMapStart = new HashMap<>();
-    static HashMap<String,String> poiMapEnd = new HashMap<>();
+    static HashMap<String, String> poiMapStart = new HashMap<>();
+    static HashMap<String, String> poiMapEnd = new HashMap<>();
 
     static AutoCompleteTextView autoCompleteTextViewStart;
     static AutoCompleteTextView autoCompleteTextViewEnd;
 
-    static boolean viewRoadCheck=false;
-    static boolean viewRoadLightCheck=false;
+    static boolean viewRoadCheck = false;
+    static boolean viewRoadLightCheck = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setList(s.toString(),searchListStart,poiMapStart);
+                setList(s.toString(), searchListStart, poiMapStart);
                 autoCompleteTextViewStart.setAdapter(new ArrayAdapter<>(getContext(),
                         android.R.layout.simple_dropdown_item_1line, searchListStart));
             }
@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setList(s.toString(),searchListEnd,poiMapEnd);
+                setList(s.toString(), searchListEnd, poiMapEnd);
                 autoCompleteTextViewEnd.setAdapter(new ArrayAdapter<>(getContext(),
                         android.R.layout.simple_dropdown_item_1line, searchListEnd));
             }
@@ -128,11 +128,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= 23 &&
-                        ContextCompat.checkSelfPermission( getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-                    ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                            0 );
-                }
-                else {
+                        ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            0);
+                } else {
 
                     gpsTracker locate = new gpsTracker(getContext());
                     double locate_latitude = locate.getLatitude();
@@ -151,14 +150,13 @@ public class HomeFragment extends Fragment {
 
                     markerGPS.setIcon(bitmapGps); // 마커 아이콘 지정
                     markerGPS.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-                    markerGPS.setTMapPoint( GpsPoint ); // 마커의 좌표 지정
+                    markerGPS.setTMapPoint(GpsPoint); // 마커의 좌표 지정
                     markerGPS.setName("현위치"); // 마커의 타이틀 지정
                     tMapView.addMarkerItem("markerGPS", markerGPS); // 지도에 마커 추가
-                    tMapView.setCenterPoint( locate_longitude,locate_latitude );
+                    tMapView.setCenterPoint(locate_longitude, locate_latitude);
                 }
             }
         });
-
 
 
         findRoad = view.findViewById(R.id.btn_findRoad);
@@ -169,28 +167,28 @@ public class HomeFragment extends Fragment {
                 String textGoal = autoCompleteTextViewEnd.getText().toString();
 
 
-                String LocationStart=convertToLocation(textStart,1);
-                String LocationEnd=convertToLocation(textGoal,2);
+                String LocationStart = convertToLocation(textStart, 1);
+                String LocationEnd = convertToLocation(textGoal, 2);
 
                 StringTokenizer stS = new StringTokenizer(LocationStart);
                 StringTokenizer stG = new StringTokenizer(LocationEnd);
 
                 stS.nextToken();
-                double startY=Double.parseDouble(stS.nextToken());
+                double startY = Double.parseDouble(stS.nextToken());
                 stS.nextToken();
-                double startX=Double.parseDouble(stS.nextToken());
+                double startX = Double.parseDouble(stS.nextToken());
                 stG.nextToken();
-                double endY=Double.parseDouble(stG.nextToken());
+                double endY = Double.parseDouble(stG.nextToken());
                 stG.nextToken();
-                double endX=Double.parseDouble(stG.nextToken());
+                double endX = Double.parseDouble(stG.nextToken());
 
-                viewRoadCheck=true;
-                setMarker(startX,startY,endX,endY);
+                viewRoadCheck = true;
+                setMarker(startX, startY, endX, endY);
 
-                tMapView.zoomToSpan(Math.abs(startY-endY),Math.abs(startX-endX));
+                tMapView.zoomToSpan(Math.abs(startY - endY), Math.abs(startX - endX));
                 receive = new receiveCoordinate(tMapView);
-                receive.sendData(startX,startY,endX,endY);
-                }
+                receive.sendData(startX, startY, endX, endY);
+            }
         });
 
         //버튼 클릭 리스너
@@ -198,16 +196,31 @@ public class HomeFragment extends Fragment {
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //우선 위치정보부터 받아옴
+                if (Build.VERSION.SDK_INT >= 23 &&
+                        ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            0);
+                } else {
+                    gpsTracker locate = new gpsTracker(getContext());
+                    double locate_latitude = locate.getLatitude();
+                    double locate_longitude = locate.getLongitude();
 
-                SmsManager smsManager = SmsManager.getDefault();
-                String sendTo = "01090856697";
-                String myMessage = "help me";
-                smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
-                Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
-                // 긴급 메세지 신고 전송 기능 구현
+                    SmsManager smsManager = SmsManager.getDefault();
+                    String sendTo = "01081319117";
+                    //String sendTo = "01028638656";
+                    //String sendTo = "01090856697";
+                    //String sendTo = "01030604595";
+                    String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
+                            + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n"
+                            + "신속 출동 바람.";
+                    smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
+                    Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+                    // 긴급 메세지 신고 전송 기능 구현
 
-                Intent intent1 = new Intent(getActivity(), VideoActivity.class);
-                startActivity(intent1);
+                    Intent intent1 = new Intent(getActivity(), VideoActivity.class);
+                    startActivity(intent1);
+                }
             }
         });
 
@@ -215,10 +228,10 @@ public class HomeFragment extends Fragment {
         showroad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int normal=1;
-                final int light=2;
+                final int normal = 1;
+                final int light = 2;
 
-                if(showroad_option==normal) {//option -> showroad_option static으로 선언해뒀다.
+                if (showroad_option == normal) {//option -> showroad_option static으로 선언해뒀다.
                     if (viewRoadCheck) { // on
                         receive.deleteRoadLine();
                         viewRoadCheck = false;
@@ -226,8 +239,7 @@ public class HomeFragment extends Fragment {
                         receive.redrawRoadLine();
                         viewRoadCheck = true;
                     }
-                }
-                else if(showroad_option==light){
+                } else if (showroad_option == light) {
                     if (viewRoadLightCheck) { // light on
                         //receive.deleteRoadLine();
                         viewRoadLightCheck = false;
@@ -262,16 +274,15 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public String convertToLocation(String address,int option){
+    public String convertToLocation(String address, int option) {
 
 
-        if(option==1){ // start
-            if(poiMapStart.containsKey(address))
+        if (option == 1) { // start
+            if (poiMapStart.containsKey(address))
                 return poiMapStart.get(address);
 
-        }
-        else if(option==2){ // end
-            if(poiMapEnd.containsKey(address))
+        } else if (option == 2) { // end
+            if (poiMapEnd.containsKey(address))
                 return poiMapEnd.get(address);
         }
 
@@ -279,9 +290,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-
-    public static void setList(String search, ArrayList<String> addlist, HashMap<String,String> hashMap){
+    public static void setList(String search, ArrayList<String> addlist, HashMap<String, String> hashMap) {
 
 
         TMapData tmapdata = new TMapData();
@@ -289,12 +298,12 @@ public class HomeFragment extends Fragment {
         tmapdata.findAllPOI(search, new TMapData.FindAllPOIListenerCallback() {
             @Override
             public void onFindAllPOI(ArrayList poiItem) {
-                for(int i = 0; i < poiItem.size(); i++) {
-                    TMapPOIItem  item = (TMapPOIItem) poiItem.get(i);
-                    if(addlist.contains(item.getPOIName()))
+                for (int i = 0; i < poiItem.size(); i++) {
+                    TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
+                    if (addlist.contains(item.getPOIName()))
                         continue;
                     addlist.add(item.getPOIName());
-                    hashMap.put(item.getPOIName().toString(),item.getPOIPoint().toString());
+                    hashMap.put(item.getPOIName().toString(), item.getPOIPoint().toString());
                 }
             }
         });
@@ -303,26 +312,26 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void setMarker(double startX,double startY,double endX,double endY){
+    public void setMarker(double startX, double startY, double endX, double endY) {
         TMapMarkerItem markerItem1 = new TMapMarkerItem();
         TMapMarkerItem markerItem2 = new TMapMarkerItem();
 
         TMapPoint tMapPoint1 = new TMapPoint(startY, startX);
-        TMapPoint tMapPoint2 = new TMapPoint(endY,endX);
+        TMapPoint tMapPoint2 = new TMapPoint(endY, endX);
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.map_marker1);
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.map_marker2);
 
         markerItem1.setIcon(bitmap1); // 마커 아이콘 지정
         markerItem1.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-        markerItem1.setTMapPoint( tMapPoint1 ); // 마커의 좌표 지정
+        markerItem1.setTMapPoint(tMapPoint1); // 마커의 좌표 지정
         markerItem1.setName("출발"); // 마커의 타이틀 지정
         tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
-        tMapView.setCenterPoint( startX, startY );
+        tMapView.setCenterPoint(startX, startY);
 
         markerItem2.setIcon(bitmap2); // 마커 아이콘 지정
         markerItem2.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-        markerItem2.setTMapPoint( tMapPoint2 ); // 마커의 좌표 지정
+        markerItem2.setTMapPoint(tMapPoint2); // 마커의 좌표 지정
         markerItem2.setName("도"); // 마커의 타이틀 지정
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
 
