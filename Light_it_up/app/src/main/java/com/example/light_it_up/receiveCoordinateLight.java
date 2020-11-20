@@ -151,7 +151,7 @@ public class receiveCoordinateLight {
             }
 
             LampExtraction lamp = new LampExtraction(context);
-            boundLamp = lamp.getBoundCoord(startX, startY, endX, endY); // 경계 내부에 있는 (가로등, 보안등) 좌표 얻어옴.
+            boundLamp = lamp.getBoundCoord(startY, startX, endY, endX); // 경계 내부에 있는 (가로등, 보안등) 좌표 얻어옴.
             roadBound = boundLamp.get(0); // 경계 내부에 있는 가로등 좌표
             streetBound = boundLamp.get(1); // 경계 내부에 있는 보안등 좌표
 
@@ -236,8 +236,8 @@ public class receiveCoordinateLight {
 
             /// 경계 내 보안등 좌표
             for (receiveCoordinateLight.Coord road: roadBound) {
-                targetX = Double.parseDouble(road.first());
-                targetY = Double.parseDouble(road.second());
+                targetX = Double.parseDouble(road.second());
+                targetY = Double.parseDouble(road.first());
 
                 double dist = calculator.distance(x1, y1, x2, y2, targetX, targetY);
                 if(dist < 0) continue;
@@ -270,8 +270,8 @@ public class receiveCoordinateLight {
 
             /// 경계 내 가로등 좌표
             for (receiveCoordinateLight.Coord street: streetBound) {
-                targetX = Double.parseDouble(street.first());
-                targetY = Double.parseDouble(street.second());
+                targetX = Double.parseDouble(street.second());
+                targetY = Double.parseDouble(street.first());
 
                 double dist = calculator.distance(x1, y1, x2, y2, targetX, targetY);
                 if(dist < 0) continue;
@@ -316,8 +316,8 @@ public class receiveCoordinateLight {
                         //System.out.println(coordinates.get(startPoint + 1).first() + " " + coordinates.get(startPoint + 1).second());
                         //System.out.println(coordinates.get(i + 2).first() + " " + coordinates.get(i + 2).second());
 
-                        firstDetourStart = new Coord(coordinates.get(startPoint + 1).first(), coordinates.get(startPoint + 1).second());
-                        firstDetourEnd = new Coord(coordinates.get(i + 2).first(), coordinates.get(i + 2).second());
+                        firstDetourStart = new Coord(coordinates.get(startPoint + 1).second(), coordinates.get(startPoint + 1).first());
+                        firstDetourEnd = new Coord(coordinates.get(i + 2).second(), coordinates.get(i + 2).first());
                         firstDetourStartIndex = startPoint + 1;
                         firstDetourEndIndex = i + 2;
                         firstPoint = false;
