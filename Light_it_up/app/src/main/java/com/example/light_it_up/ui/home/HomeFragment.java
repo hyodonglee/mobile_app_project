@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +44,14 @@ import java.util.StringTokenizer;
 
 import com.example.light_it_up.*;
 
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 public class HomeFragment extends Fragment {
 
     static receiveCoordinate receive;
+    static receiveCoordinateLight receiveLight;
 
     static View view;
     RelativeLayout mapView;
@@ -58,8 +65,6 @@ public class HomeFragment extends Fragment {
 
 
     Button showroad;
-    static int showroad_option;
-
     Button showRoadLight;
 
     static ArrayList<String> searchListStart = new ArrayList<>();
@@ -215,12 +220,26 @@ public class HomeFragment extends Fragment {
                     //String sendTo = "01028638656";
                     //String sendTo = "01090856697";
                     //String sendTo = "01030604595";
-                    String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
-                            + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n"
-                            + "신속 출동 바람.";
-                    smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
-                    Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
-                    // 긴급 메세지 신고 전송 기능 구현
+
+
+                    new TMapData().convertGpsToAddress(locate_latitude, locate_longitude,
+                            new TMapData.ConvertGPSToAddressListenerCallback() {
+                                @Override
+                                public void onConvertToGPSToAddress(String strAddress) {
+                                    Log.d("address",strAddress);
+                                    System.out.println(strAddress);
+
+                                    String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
+                                            + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n" + "현위치 = " + strAddress+"\n"
+                                            + "신속 출동 바람.";
+                                    smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
+                                    Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+                                    // 긴급 메세지 신고 전송 기능 구현
+
+                                }
+                            });
+
+
 
                     Intent intent1 = new Intent(getActivity(), VideoActivity.class);
                     startActivity(intent1);
@@ -232,10 +251,6 @@ public class HomeFragment extends Fragment {
         showroad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int normal = 1;
-                final int light = 2;
-
-                if (showroad_option == normal) {//option -> showroad_option static으로 선언해뒀다.
                     if (viewRoadCheck) { // on
                         receive.deleteRoadLine();
                         viewRoadCheck = false;
@@ -243,25 +258,24 @@ public class HomeFragment extends Fragment {
                         receive.redrawRoadLine();
                         viewRoadCheck = true;
                     }
-                } else if (showroad_option == light) {
-                    if (viewRoadLightCheck) { // light on
-                        //receive.deleteRoadLine();
-                        viewRoadLightCheck = false;
-                    } else { // light off
-                        //receive.redrawRoadLine();
-                        viewRoadLightCheck = true;
-                    }
 
                 }
-            }
-        });
+            });
 
-        showRoadLight = (Button) view.findViewById(R.id.btn_showLoad);
+        showRoadLight = (Button) view.findViewById(R.id.bnt_showLoadlight);
         showRoadLight.setOnClickListener(new View.OnClickListener() {//가로등경로 리스너
             @Override
             public void onClick(View view) {
 
+                if (viewRoadLightCheck) { // on
+                    receiveLight.deleteRoadLine();
+                    viewRoadLightCheck = false;
+                } else { // off
+                    receiveLight.redrawRoadLine();
+                    viewRoadLightCheck = true;
+                }
             }
+
         });
 
 
