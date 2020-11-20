@@ -1,6 +1,8 @@
 package com.example.light_it_up;
 
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class AroundSearchLamp {
@@ -10,7 +12,7 @@ public class AroundSearchLamp {
         ArrayList<receiveCoordinateLight.Coord> around_lamp = new ArrayList<receiveCoordinateLight.Coord>();
         Operator calculater = new Operator();
         //다음 경로까지의 길이를 반경 값으로 설정.
-        double radius = calculater.pointDistance(coordinates.get(src_index), coordinates.get(dst_index));
+        double radius = calculater.pointDistance2(coordinates.get(src_index), coordinates.get(dst_index));
         receiveCoordinateLight.Coord coord = coordinates.get(src_index); // #해당 좌표값.
 
         for(receiveCoordinateLight.Coord lamp : roadBound)
@@ -27,7 +29,6 @@ public class AroundSearchLamp {
         }
         if(around_lamp.isEmpty())
         {
-            System.out.println("우회경로 없음");
             return null;
         }
         return around_lamp;

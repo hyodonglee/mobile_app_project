@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -46,13 +47,13 @@ public class HomeFragment extends Fragment {
     static receiveCoordinate receive;
 
     static View view;
-    LinearLayout mapView;
+    RelativeLayout mapView;
     static TMapView tMapView;
 
     String apiKey = "l7xx9e4f453a79804608bc16947e4ed09909";
     Button report;
 
-    Button gps;
+    FloatingActionButton gps;
     Button findRoad;
 
 
@@ -76,7 +77,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mapView = (LinearLayout) view.findViewById(R.id.layoutMap);
+        mapView = (RelativeLayout) view.findViewById(R.id.layoutMap);
 
 
         report = (Button) view.findViewById(R.id.report);
@@ -157,6 +158,8 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+
 
         findRoad = view.findViewById(R.id.btn_findRoad);
         findRoad.setOnClickListener(new View.OnClickListener() {

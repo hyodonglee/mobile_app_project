@@ -1,5 +1,6 @@
 package com.example.light_it_up;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -52,6 +53,7 @@ public class receiveCoordinateLight {
     public static Double endY;
 
 
+    public static Context context;
 
 
     ArrayList<TMapPoint> previousList = new ArrayList<>();
@@ -68,20 +70,21 @@ public class receiveCoordinateLight {
         return instance;
     }
 
-    public receiveCoordinateLight(TMapView mapview){
+    public receiveCoordinateLight(TMapView mapview,Context passcontext){
         TMapView=mapview;
+        context=passcontext;
         this.client = new OkHttpClient();
     }
 
 
-    public ArrayList<TMapPoint> sendDataLight(Double startX,Double startY,Double endX,Double endY) {
+    public ArrayList<TMapPoint> sendDataLight(Double passstartX,Double passstartY,Double passendX,Double passendY) {
 
-        this.startX=startX;
-        this.startY=startY;
-        this.endX=endX;
-        this.endY=endY;
+        this.startX=passstartX;
+        this.startY=passstartY;
+        this.endX=passendX;
+        this.endY=passendY;
 
-        postThread request = new postThread(this.startX,this.startY,this.endX,this.endY);
+        postThread request = new postThread();
         request.run();
 
         try{
@@ -147,8 +150,8 @@ public class receiveCoordinateLight {
                 e.printStackTrace();
             }
 
-            LampExtraction lamp = new LampExtraction();
-            boundLamp = lamp.getBoundCoord(startX, startY, endX, endY); // 경계 내부에 있는 (가로등, 보안등) 좌표 얻어옴.
+            LampExtraction lamp = new LampExtraction(context);
+            boundLamp = lamp.getBoundCoord(startY, startX, endY, endX); // 경계 내부에 있는 (가로등, 보안등) 좌표 얻어옴.
             roadBound = boundLamp.get(0); // 경계 내부에 있는 가로등 좌표
             streetBound = boundLamp.get(1); // 경계 내부에 있는 보안등 좌표
 
@@ -157,26 +160,27 @@ public class receiveCoordinateLight {
 
             ArrayList<receiveCoordinateLight.Coord> aroundLamps = AroundSearchLamp.aroundLamps(firstDetourStartIndex,firstDetourEndIndex, coordinates, roadBound,roadInPath,streetBound, streetInPath);
 
-            // 가장 가까운 가로등 좌표
-            receiveCoordinateLight.Coord nextLamp = shortestLamp.findShortestLamp(firstDetourStart, roadInPath, streetInPath, aroundLamps);
-            //System.out.println();
-
-            if(isDetour)
-            {
-                ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
-                receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView);
-                reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
-                ansList.addAll(reqMidPath.coordinates);
-                //test(nextLamp.first(), nextLamp.second(), endX, endY);
+            if(aroundLamps != null) {
+                // 가장 가까운 가로등 좌표
+                receiveCoordinateLight.Coord nextLamp = shortestLamp.findShortestLamp(firstDetourStart, roadInPath, streetInPath, aroundLamps);
+                //System.out.println();
+                if (isDetour) {
+                    ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
+                    receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView, context);
+                    reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
+                    ansList.addAll(reqMidPath.coordinates);
+                    //test(nextLamp.first(), nextLamp.second(), endX, endY);
+                } else {
+                    ansList.addAll(coordinates);
+                    ArrayList<TMapPoint> temp = addTMapPoint(ansList);
+                    drawLine(temp);
+                }
             }
-            else{
+            else {
                 ansList.addAll(coordinates);
-                ArrayList<TMapPoint> temp=addTMapPoint(coordinates);
+                ArrayList<TMapPoint> temp = addTMapPoint(ansList);
                 drawLine(temp);
-
             }
-
-
         }
 
 
@@ -191,7 +195,7 @@ public class receiveCoordinateLight {
     public ArrayList<TMapPoint> addTMapPoint(ArrayList<receiveCoordinateLight.Coord> list){
         ArrayList<TMapPoint> returnList = new ArrayList<>();
         for(int i=0;i<list.size();i++){
-            returnList.add(new TMapPoint(Double.parseDouble(list.get(i).second()),Double.parseDouble(list.get(i).first())));
+            returnList.add(new TMapPoint(Double.parseDouble(list.get(i).first()),Double.parseDouble(list.get(i).second())));
         }
 
         return returnList;
@@ -200,7 +204,7 @@ public class receiveCoordinateLight {
     public void drawLine(ArrayList<TMapPoint> pointList){
 
         tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.YELLOW);
+        tMapPolyLine.setLineColor(Color.RED);
         tMapPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {
@@ -233,8 +237,8 @@ public class receiveCoordinateLight {
 
             /// 경계 내 보안등 좌표
             for (receiveCoordinateLight.Coord road: roadBound) {
-                targetX = Double.parseDouble(road.first());
-                targetY = Double.parseDouble(road.second());
+                targetX = Double.parseDouble(road.second());
+                targetY = Double.parseDouble(road.first());
 
                 double dist = calculator.distance(x1, y1, x2, y2, targetX, targetY);
                 if(dist < 0) continue;
@@ -267,8 +271,8 @@ public class receiveCoordinateLight {
 
             /// 경계 내 가로등 좌표
             for (receiveCoordinateLight.Coord street: streetBound) {
-                targetX = Double.parseDouble(street.first());
-                targetY = Double.parseDouble(street.second());
+                targetX = Double.parseDouble(street.second());
+                targetY = Double.parseDouble(street.first());
 
                 double dist = calculator.distance(x1, y1, x2, y2, targetX, targetY);
                 if(dist < 0) continue;
@@ -313,8 +317,8 @@ public class receiveCoordinateLight {
                         //System.out.println(coordinates.get(startPoint + 1).first() + " " + coordinates.get(startPoint + 1).second());
                         //System.out.println(coordinates.get(i + 2).first() + " " + coordinates.get(i + 2).second());
 
-                        firstDetourStart = new Coord(coordinates.get(startPoint + 1).first(), coordinates.get(startPoint + 1).second());
-                        firstDetourEnd = new Coord(coordinates.get(i + 2).first(), coordinates.get(i + 2).second());
+                        firstDetourStart = new Coord(coordinates.get(startPoint + 1).second(), coordinates.get(startPoint + 1).first());
+                        firstDetourEnd = new Coord(coordinates.get(i + 2).second(), coordinates.get(i + 2).first());
                         firstDetourStartIndex = startPoint + 1;
                         firstDetourEndIndex = i + 2;
                         firstPoint = false;
@@ -335,13 +339,10 @@ public class receiveCoordinateLight {
 
     private class postThread extends Thread {
 
-        Double startX,startY,endX,endY;
 
-        postThread(Double startX, Double startY, Double endX, Double endY){
-            this.startX=startX;
-            this.startY=startY;
-            this.endX=endX;
-            this.endY=endY;
+
+        postThread(){
+
         }
 
         public void run() {

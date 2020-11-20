@@ -54,6 +54,7 @@ dependencies {
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.8.0' // log 확인
 
     compile 'com.opencsv:opencsv:3.9'
+    compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
 
 
 }
