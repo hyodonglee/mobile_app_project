@@ -15,10 +15,9 @@
 
         <TextView
             android:id="@+id/textStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="출발점 : " />
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="@drawable/start"/>
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteAddressStart"
@@ -44,10 +43,9 @@
 
         <TextView
             android:id="@+id/textGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="도착점 :" />
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="@drawable/des" />
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteAddressEnd"
@@ -66,7 +64,7 @@
     <RelativeLayout
         android:id="@+id/layoutMap"
         android:layout_width="match_parent"
-        android:layout_height="560dp"
+        android:layout_height="430dp"
         android:layout_weight="8"
         android:layout_below="@+id/deslayout"
         android:orientation="horizontal">
@@ -77,9 +75,8 @@
             android:id="@+id/btn_GPS"
             android:src="@drawable/location"
             android:backgroundTint="@color/browser_actions_bg_grey"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:layout_marginTop="480dp"
+            app:maxImageSize="60dp"
+            android:layout_marginTop="360dp"
             android:layout_marginLeft="350dp"
             >
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
@@ -88,7 +85,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_weight="1"
         android:id="@+id/btn"
         android:layout_below="@+id/layoutMap"
@@ -120,9 +117,9 @@
             android:layout_toRightOf="@+id/report"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/shortest"
             android:textSize="18sp"
-            android:layout_marginLeft="20dp"
-            android:text="최단경로" />
+            android:layout_marginLeft="20dp" />
 
         <Button
             android:id="@+id/bnt_showLoadlight"
@@ -130,9 +127,8 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/btn_showLoad"
             android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:textSize="15sp"
-            android:text="가로등경로" />
+            android:background="@drawable/light"
+            android:layout_weight="1"/>
 
 
     </RelativeLayout>
