@@ -27,9 +27,7 @@ import okhttp3.RequestBody;
 
 public class receiveCoordinateLight {
 
-
-
-    private static ArrayList<receiveCoordinateLight.Coord> ansList = new ArrayList<>();
+    private static ArrayList<TMapPoint> ansList = new ArrayList<TMapPoint>();
 
     public static ArrayList<Coord> coordinates = new ArrayList<>();
 
@@ -165,21 +163,27 @@ public class receiveCoordinateLight {
                 receiveCoordinateLight.Coord nextLamp = shortestLamp.findShortestLamp(firstDetourStart, roadInPath, streetInPath, aroundLamps);
                 //System.out.println();
                 if (isDetour) {
-                    ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
-                    receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView, context);
-                    reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
-                    ansList.addAll(reqMidPath.coordinates);
-                    //test(nextLamp.first(), nextLamp.second(), endX, endY);
-                } else {
-                    ansList.addAll(coordinates);
-                    ArrayList<TMapPoint> temp = addTMapPoint(ansList);
-                    drawLine(temp);
+//                    ansList.addAll(coordinates.subList(0, firstDetourStartIndex + 1));
+                    receiveCoordinateBridge reqMidPath = new receiveCoordinateBridge(TMapView);
+//                    reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
+//                    ansList.addAll(reqMidPath.coordinates);
+
+                    reqMidPath.sendData(startX, startY, Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()), endX, endY);
+//                    ansList.addAll(reqMidPath.pointList);
+
+//                    reqMidPath.sendData(Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()), endX, endY);
+//                    ansList.addAll(reqMidPath.pointList);
+//                    drawLine(ansList);
                 }
+                else ansList.addAll(addTMapPoint(coordinates));
+
+//                ArrayList<TMapPoint> temp = addTMapPoint(ansList);
+//                drawLine(temp);
             }
             else {
-                ansList.addAll(coordinates);
-                ArrayList<TMapPoint> temp = addTMapPoint(ansList);
-                drawLine(temp);
+                ansList.addAll(addTMapPoint(coordinates));
+//                ArrayList<TMapPoint> temp = addTMapPoint(ansList);
+                drawLine(ansList);
             }
         }
 
@@ -228,7 +232,7 @@ public class receiveCoordinateLight {
             double x1 = Double.parseDouble(coordinates.get(i).first()), y1 = Double.parseDouble(coordinates.get(i).second());
             double x2 = Double.parseDouble(coordinates.get(i + 1).first()), y2 = Double.parseDouble(coordinates.get(i + 1).second());
 
-            if(startPoint == 0) startPoint = i;
+            //if(startPoint == 0) startPoint = i;
 
             int temp_road = 0, temp_street = 0;
 
@@ -324,13 +328,12 @@ public class receiveCoordinateLight {
                         firstPoint = false;
                     }
                 }
-                else
-                    //System.out.println("지나가도 되는 길 입니다.");
-
+                else {
                     partialDistance = 0;
-                streetLampCount = 0;
-                roadLampCount = 0;
-                startPoint = 0;
+                    streetLampCount = 0;
+                    roadLampCount = 0;
+                    startPoint = i;
+                }
             }
         }
 
