@@ -3,6 +3,7 @@ package com.example.light_it_up;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
@@ -61,7 +62,7 @@ public class receiveCoordinateLight {
 
     TMapView TMapView;
 
-    TMapPolyLine tMapPolyLine;
+    TMapPolyLine LightPolyLine;
 
     private receiveCoordinate httpConn = receiveCoordinate.getInstance();
     private static OkHttpClient client;
@@ -203,15 +204,25 @@ public class receiveCoordinateLight {
 
     public void drawLine(ArrayList<TMapPoint> pointList){
 
-        tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.RED);
-        tMapPolyLine.setLineWidth(4);
+        LightPolyLine = new TMapPolyLine();
+        LightPolyLine.setLineColor(Color.GREEN);
+        LightPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {
-            tMapPolyLine.addLinePoint( pointList.get(i) );
+            LightPolyLine.addLinePoint( pointList.get(i) );
         }
 
-        TMapView.addTMapPolyLine("Line1", tMapPolyLine);
+        TMapView.addTMapPolyLine("Line2", LightPolyLine);
+    }
+
+    public void deleteRoadLine(){
+        previousList=LightPolyLine.getLinePoint();
+        LightPolyLine= new TMapPolyLine();
+        TMapView.addTMapPolyLine("Line2",LightPolyLine);
+    }
+
+    public void redrawRoadLine(){
+        drawLine(previousList);
     }
 
 
