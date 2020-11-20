@@ -114,7 +114,7 @@ public class SignIn extends AppCompatActivity {
         //strPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         phoneNum = strPhone.getText().toString();
 
-        Intent intent = new Intent(getApplicationContext(), Navi.class);
+        Intent intent = new Intent(getApplicationContext(), viewHome.class);
         intent.putExtra("name",strNickname);
         intent.putExtra("phone", phoneNum);
         writeNewUser(strNickname, strNickname, strEmail, strGender, phoneNum);//사용자 정보 디비에 저장

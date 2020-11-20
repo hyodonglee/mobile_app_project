@@ -252,7 +252,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        showRoadLight = (Button) view.findViewById(R.id.btn_showLoad);
+        showRoadLight = (Button) view.findViewById(R.id.bnt_showLoadlight);
         showRoadLight.setOnClickListener(new View.OnClickListener() {//가로등경로 리스너
             @Override
             public void onClick(View view) {

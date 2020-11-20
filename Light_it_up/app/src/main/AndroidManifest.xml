@@ -38,6 +38,7 @@
 
         </activity>
         <activity android:name=".viewHome">
+
         </activity>
 
         <meta-data
