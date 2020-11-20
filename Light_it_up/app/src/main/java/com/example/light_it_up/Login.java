@@ -31,7 +31,9 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.OptionalBoolean;
 import com.kakao.util.exception.KakaoException;
 
+import java.io.IOException;
 import java.security.MessageDigest;
+
 
 public class Login extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
