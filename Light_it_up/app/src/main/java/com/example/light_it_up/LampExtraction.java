@@ -34,30 +34,31 @@ public class LampExtraction {
         double x_margin = 0.0016; // 경도 가장자리 여분
         double y_margin = 0.007; // 위도 가장자리 여분
         double lat_low = 0, lat_high = 0, lon_left = 0, lon_right = 0;
+
         if (startY >= endY) //위도
         {
-            lon_left = endY;
-            lon_right = startY;
+            lat_low = endY;
+            lat_high = startY;
         }
         else
         {
-            lon_left = startY;
-            lon_right = endY;
+            lat_low = startY;
+            lat_high = endY;
         }
         if (startX >= endX) // # 경도
         {
-            lat_low = endX;
-            lat_high = startX;
+            lon_left = endX;
+            lon_right = startX;
         }
         else {
-            lat_low = startX;
-            lat_high = endX;
+            lon_left = startX;
+            lon_right = endX;
         }
 
-        latUpperBound = lat_high + x_margin; // # 위도 최대값
-        latLowerBound = lat_low - x_margin; //  # 위도 최소값
-        lonLeftBound = lon_left - y_margin; //  # 경도 최소값
-        lonRightBound = lon_right + y_margin; //  # 경도 최대값
+        latUpperBound = lat_high + y_margin; // # 위도 최대값
+        latLowerBound = lat_low - y_margin; //  # 위도 최소값
+        lonLeftBound = lon_left - x_margin; //  # 경도 최소값
+        lonRightBound = lon_right + x_margin; //  # 경도 최대값
 
         ArrayList<receiveCoordinateLight.Coord> allRoadLamp = new ArrayList<receiveCoordinateLight.Coord>();
         ArrayList<receiveCoordinateLight.Coord> allStreetLamp = new ArrayList<receiveCoordinateLight.Coord>();
@@ -76,14 +77,14 @@ public class LampExtraction {
             System.out.println(road_lamp.get(i).first() + " " + road_lamp.get(i).second());
         }
         for (int i = 0; i < road_lamp.size(); i++) {
-            String lat = road_lamp.get(i).first();
-            String lon = road_lamp.get(i).second();
+            String lat = road_lamp.get(i).second();
+            String lon = road_lamp.get(i).first();
             if(check_boundary(lat, lon))
                 allRoadLamp.add(new receiveCoordinateLight.Coord(lat, lon));
         }
         for (int i = 0; i < street_lamp.size(); i++) {
-            String lat = street_lamp.get(i).first();
-            String lon = street_lamp.get(i).second();
+            String lat = street_lamp.get(i).second();
+            String lon = street_lamp.get(i).first();
             if(check_boundary(lat, lon))
                 allStreetLamp.add(new receiveCoordinateLight.Coord(lat, lon));
         }
