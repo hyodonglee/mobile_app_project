@@ -97,19 +97,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/find"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="#FF9800"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
             android:id="@+id/report"
-            android:layout_weight="1"
-            android:layout_toRightOf="@+id/btn_findRoad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/report"/>
+            android:layout_toRightOf="@+id/btn_findRoad"
+            android:layout_weight="1"
+            android:background="@drawable/report" />
 
         <Button
             android:id="@+id/btn_showLoad"
@@ -127,7 +127,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/btn_showLoad"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/light"
+            android:background="@drawable/light_road"
             android:layout_weight="1"/>
 
 
