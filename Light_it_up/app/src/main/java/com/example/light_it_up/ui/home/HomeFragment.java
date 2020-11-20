@@ -267,13 +267,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (viewRoadLightCheck) { // on
-                    receiveLight.deleteRoadLine();
-                    viewRoadLightCheck = false;
-                } else { // off
-                    receiveLight.redrawRoadLine();
-                    viewRoadLightCheck = true;
-                }
+                receiveCoordinateLight receiveLight;
+                receiveLight=new receiveCoordinateLight(tMapView,getContext());
+                receiveLight.sendDataLight(startX,startY,endX,endY);
             }
 
         });
