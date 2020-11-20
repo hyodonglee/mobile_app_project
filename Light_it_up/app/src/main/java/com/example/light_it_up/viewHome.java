@@ -168,12 +168,10 @@ public class viewHome extends AppCompatActivity {
         receive = new receiveCoordinate(tMapView);
         receive.sendData(startX,startY,endX,endY);
 
+
+        viewRoadLightCheck=true;
         receiveLight=new receiveCoordinateLight(tMapView,getApplicationContext());
         receiveLight.sendDataLight(startX,startY,endX,endY);
-
-
-        // 여기 위는 일반 가로등 찾기 기
-
 
     }
 
@@ -257,31 +255,29 @@ public class viewHome extends AppCompatActivity {
 
     }
 
-    public void showLoad(View view,int option) {
+    public void showLoad(View view) {
 
-        final int normal=1;
-        final int light=2;
 
-        if(option==normal) {
-            if (viewRoadCheck) { // on
-                receive.deleteRoadLine();
-                viewRoadCheck = false;
-            } else { // off
-                receive.redrawRoadLine();
-                viewRoadCheck = true;
-            }
-        }
-        else if(option==light){
-            if (viewRoadLightCheck) { // light on
-                //receive.deleteRoadLine();
-                viewRoadLightCheck = false;
-            } else { // light off
-                //receive.redrawRoadLine();
-                viewRoadLightCheck = true;
-            }
-
+        if (viewRoadCheck) { // on
+            receive.deleteRoadLine();
+            viewRoadCheck = false;
+        } else { // off
+            receive.redrawRoadLine();
+            viewRoadCheck = true;
         }
 
+
+    }
+
+
+    public void showLoadlight(View vie){
+        if (viewRoadLightCheck) { // on
+            receiveLight.deleteRoadLine();
+            viewRoadLightCheck = false;
+        } else { // off
+            receiveLight.redrawRoadLine();
+            viewRoadLightCheck = true;
+        }
     }
 
 }
