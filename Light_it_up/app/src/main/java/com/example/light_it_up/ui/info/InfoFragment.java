@@ -22,11 +22,11 @@ public class InfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_info, container, false);
-        Button btn = (Button)root.findViewById(R.id.bnt);
-        Bundle bun = getArguments();
-        if(bun != null) {
-            name = bun.getString("name");
+        View view = inflater.inflate(R.layout.fragment_info, container, false);
+        Button btn = (Button)view.findViewById(R.id.bnt);
+
+        if(getArguments() != null) {
+            name = getArguments().getString("name");
         }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +35,6 @@ public class InfoFragment extends Fragment {
             }
         });
 
-        return root;
+        return view;
     }
 }
