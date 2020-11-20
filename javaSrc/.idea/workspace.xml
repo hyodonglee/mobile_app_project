@@ -21,6 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d1a53c97-06d3-4d02-b70c-3ba85d4b23b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../Light_it_up/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Light_it_up/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/AroundSearchLamp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/AroundSearchLamp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/LampExtraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/LampExtraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/receiveCoordinateLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/receiveCoordinateLight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/ui/home/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Light_it_up/app/src/main/java/com/example/light_it_up/ui/home/HomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,6 +151,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
