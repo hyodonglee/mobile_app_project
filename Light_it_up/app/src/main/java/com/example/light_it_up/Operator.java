@@ -34,6 +34,11 @@ public class Operator {
     }
 
     public static double pointDistance(receiveCoordinateLight.Coord x, receiveCoordinateLight.Coord y) {
+        return Math.sqrt(Math.pow(Double.parseDouble(x.first()) - Double.parseDouble(y.second()), 2) +
+                Math.pow(Double.parseDouble(x.second()) - Double.parseDouble(y.first()), 2));
+    }
+
+    public static double pointDistance2(receiveCoordinateLight.Coord x, receiveCoordinateLight.Coord y) {
         return Math.sqrt(Math.pow(Double.parseDouble(x.first()) - Double.parseDouble(y.first()), 2) +
                 Math.pow(Double.parseDouble(x.second()) - Double.parseDouble(y.second()), 2));
     }
