@@ -188,6 +188,10 @@ public class HomeFragment extends Fragment {
                 tMapView.zoomToSpan(Math.abs(startY - endY), Math.abs(startX - endX));
                 receive = new receiveCoordinate(tMapView);
                 receive.sendData(startX, startY, endX, endY);
+
+                receiveCoordinateLight receiveLight;
+                receiveLight=new receiveCoordinateLight(tMapView,getContext());
+                receiveLight.sendDataLight(startX,startY,endX,endY);
             }
         });
 
