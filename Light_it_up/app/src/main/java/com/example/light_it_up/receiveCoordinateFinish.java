@@ -31,7 +31,7 @@ public class receiveCoordinateFinish {
 
         TMapView TMapView;
 
-        TMapPolyLine tMapPolyLine;
+        TMapPolyLine LightPolyLine;
 
         private receiveCoordinateFinish httpConn = receiveCoordinateFinish.getInstance();
         private static OkHttpClient client;
@@ -131,21 +131,21 @@ public class receiveCoordinateFinish {
 
     public void drawLine(ArrayList<TMapPoint> pointList){
 
-        tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.RED);
-        tMapPolyLine.setLineWidth(4);
+        LightPolyLine = new TMapPolyLine();
+        LightPolyLine.setLineColor(Color.GREEN);
+        LightPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {
-            tMapPolyLine.addLinePoint( pointList.get(i) );
+            LightPolyLine.addLinePoint( pointList.get(i) );
         }
 
-        TMapView.addTMapPolyLine("Line1", tMapPolyLine);
+        TMapView.addTMapPolyLine("Line2", LightPolyLine);
     }
 
     public void deleteRoadLine(){
-        previousList=tMapPolyLine.getLinePoint();
-        tMapPolyLine= new TMapPolyLine();
-        TMapView.addTMapPolyLine("Line1",tMapPolyLine);
+        previousList=LightPolyLine.getLinePoint();
+        LightPolyLine= new TMapPolyLine();
+        TMapView.addTMapPolyLine("Line2",LightPolyLine);
     }
 
     public void redrawRoadLine(){
