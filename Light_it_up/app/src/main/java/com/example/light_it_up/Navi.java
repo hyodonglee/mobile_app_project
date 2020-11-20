@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -47,12 +49,14 @@ public class Navi extends AppCompatActivity {
         name = intent.getStringExtra("name");
         email = intent.getStringExtra("email");
 
-        InfoFragment fragment = new InfoFragment();
+        FragmentManager fragment = getSupportFragmentManager();
+        FragmentTransaction ft = fragment.beginTransaction();
+      //  ft.add()
         Bundle bundle = new Bundle();
 
         bundle.putString("name", name);
         bundle.putString("email", email);
-        fragment.setArguments(bundle);
+      //  fragment.setArguments(bundle);
     }
 
     @Override
