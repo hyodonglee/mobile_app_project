@@ -194,9 +194,9 @@ public class HomeFragment extends Fragment {
                 receive = new receiveCoordinate(tMapView);
                 receive.sendData(startX, startY, endX, endY);
 
-                viewRoadLightCheck=true;
-
-
+                receiveCoordinateLight receiveLight;
+                receiveLight=new receiveCoordinateLight(tMapView,getContext());
+                receiveLight.sendDataLight(startX,startY,endX,endY);
             }
         });
 
