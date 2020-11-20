@@ -21,7 +21,7 @@ public class shortestLamp {
             }
         }
         for (int i = 0; i < aroundLamps.size(); i++) {
-            double distance = calculater.pointDistance(fds, aroundLamps.get(i));
+            double distance = calculater.pointDistance2(fds, aroundLamps.get(i));
             if(maxCost < distance){
                 maxCost = distance;
                 result = aroundLamps.get(i);

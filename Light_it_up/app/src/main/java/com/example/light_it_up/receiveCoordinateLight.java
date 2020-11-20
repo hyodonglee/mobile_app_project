@@ -160,26 +160,27 @@ public class receiveCoordinateLight {
 
             ArrayList<receiveCoordinateLight.Coord> aroundLamps = AroundSearchLamp.aroundLamps(firstDetourStartIndex,firstDetourEndIndex, coordinates, roadBound,roadInPath,streetBound, streetInPath);
 
-            // 가장 가까운 가로등 좌표
-            receiveCoordinateLight.Coord nextLamp = shortestLamp.findShortestLamp(firstDetourStart, roadInPath, streetInPath, aroundLamps);
-            //System.out.println();
-
-            if(isDetour)
-            {
-                ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
-                receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView,context);
-                reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
-                ansList.addAll(reqMidPath.coordinates);
-                //test(nextLamp.first(), nextLamp.second(), endX, endY);
+            if(aroundLamps != null) {
+                // 가장 가까운 가로등 좌표
+                receiveCoordinateLight.Coord nextLamp = shortestLamp.findShortestLamp(firstDetourStart, roadInPath, streetInPath, aroundLamps);
+                //System.out.println();
+                if (isDetour) {
+                    ansList.addAll(coordinates.subList(0, firstDetourStartIndex));
+                    receiveCoordinateLight reqMidPath = new receiveCoordinateLight(TMapView, context);
+                    reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
+                    ansList.addAll(reqMidPath.coordinates);
+                    //test(nextLamp.first(), nextLamp.second(), endX, endY);
+                } else {
+                    ansList.addAll(coordinates);
+                    ArrayList<TMapPoint> temp = addTMapPoint(ansList);
+                    drawLine(temp);
+                }
             }
-            else{
+            else {
                 ansList.addAll(coordinates);
-                ArrayList<TMapPoint> temp=addTMapPoint(coordinates);
+                ArrayList<TMapPoint> temp = addTMapPoint(ansList);
                 drawLine(temp);
-
             }
-
-
         }
 
 
@@ -194,7 +195,7 @@ public class receiveCoordinateLight {
     public ArrayList<TMapPoint> addTMapPoint(ArrayList<receiveCoordinateLight.Coord> list){
         ArrayList<TMapPoint> returnList = new ArrayList<>();
         for(int i=0;i<list.size();i++){
-            returnList.add(new TMapPoint(Double.parseDouble(list.get(i).second()),Double.parseDouble(list.get(i).first())));
+            returnList.add(new TMapPoint(Double.parseDouble(list.get(i).first()),Double.parseDouble(list.get(i).second())));
         }
 
         return returnList;
@@ -203,7 +204,7 @@ public class receiveCoordinateLight {
     public void drawLine(ArrayList<TMapPoint> pointList){
 
         tMapPolyLine = new TMapPolyLine();
-        tMapPolyLine.setLineColor(Color.YELLOW);
+        tMapPolyLine.setLineColor(Color.RED);
         tMapPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {

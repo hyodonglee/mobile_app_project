@@ -63,19 +63,18 @@ public class LampExtraction {
         ArrayList<receiveCoordinateLight.Coord> allRoadLamp = new ArrayList<receiveCoordinateLight.Coord>();
         ArrayList<receiveCoordinateLight.Coord> allStreetLamp = new ArrayList<receiveCoordinateLight.Coord>();
 
-        readDataFromCsv("daegusiseol_light.csv",context, 1);
+       // readDataFromCsv("daegusiseol_light.csv",context, 1);
         readDataFromCsv("bukgu_security.csv",context, 2);
         //readDataFromCsv("C:\\Users\\HyunSU\\Desktop\\2020\\2020 하반기\\코드페어\\src\\lamp\\information\대구광역시_서구_보안등정보_20190611.csv", 2);
-        readDataFromCsv("namgu_security.csv",context, 2);
-        readDataFromCsv("bukgu_security.csv",context ,2);
-        readDataFromCsv("dalseo_security.csv",context, 2);
+       // readDataFromCsv("namgu_security.csv",context, 2);
+       // readDataFromCsv("dalseo_security.csv",context, 2);
         //readDataFromCsv("C:\\Users\\HyunSU\\Desktop\\2020\\2020 하반기\\코드페어\\src\\lamp\\information\대구광역시_달성군_보안등정보_20190625.csv", 2);
         //readDataFromCsv("C:\\Users\\HyunSU\\Desktop\\2020\\2020 하반기\\코드페어\\src\\lamp\\information\대구광역시_수성구_보안등정보_20190924.csv", 2);
-        readDataFromCsv("joongu_security.csv",context, 2);
+        //readDataFromCsv("joongu_security.csv",context, 2);
 
-        for (int i = 0; i < road_lamp.size(); i++) {
-            System.out.println(road_lamp.get(i).first() + " " + road_lamp.get(i).second());
-        }
+//        for (int i = 0; i < road_lamp.size(); i++) {
+//            System.out.println(road_lamp.get(i).first() + " " + road_lamp.get(i).second());
+//        }
         for (int i = 0; i < road_lamp.size(); i++) {
             String lat = road_lamp.get(i).second();
             String lon = road_lamp.get(i).first();
