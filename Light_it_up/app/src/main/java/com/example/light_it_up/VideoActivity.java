@@ -64,7 +64,7 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                     mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                     mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
                     mediaRecorder.setOrientationHint(90);
-                    mediaRecorder.setOutputFile("/sdcard/1.mp4");
+                    mediaRecorder.setOutputFile("/sdcard/report.mp4");
                     //mediaRecorder.setOutputFile("android.resource://com.example.light_it_up/drawable/title.mp4");
                     mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
                     new Handler().postDelayed(new Runnable() {
@@ -84,9 +84,8 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                                         camera.lock();
                                         onBackPressed();
 
-                                        //Uri file = Uri.parse("/sdcard/1.mp4");
-                                        //Uri file = Uri.parse("android.resource://com.example.light_it_up/drawable/title");
-                                        Uri file = Uri.fromFile(new File("/sdcard/1.mp4"));
+
+                                        Uri file = Uri.fromFile(new File("/sdcard/report.mp4"));
                                         StorageReference videosRef = storageRef.child("videos/" + file.getLastPathSegment());
                                         UploadTask uploadTask = videosRef.putFile(file);
 
@@ -105,9 +104,8 @@ public class VideoActivity extends AppCompatActivity implements SurfaceHolder.Ca
                                         });
 
                                         SmsManager smsManager = SmsManager.getDefault();
-                                        String sendTo = "01081319117";
-                                        //String sendTo = "01028638656";
-                                        String myVideoMessage = "https://firebasestorage.googleapis.com/v0/b/lightitup-c4c0d.appspot.com/o/videos%2F1.mp4?alt=media&token=186e2da9-15a5-4141-ada7-d932acbc20d1";
+                                        String sendTo = getString(R.string.phone_number);
+                                        String myVideoMessage = "https://firebasestorage.googleapis.com/v0/b/lightitup-c4c0d.appspot.com/o/videos%2Freport.mp4?alt=media&token=7ffad23f-5dcd-4970-823b-f0c1ef2f3983";
                                         smsManager.sendTextMessage(sendTo, null, myVideoMessage, null, null);
                                         // 긴급 동영상 메세지 신고 전송 기능 구현
 
