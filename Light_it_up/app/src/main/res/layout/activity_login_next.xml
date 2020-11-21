@@ -131,7 +131,6 @@
 
     <Button
         android:id="@+id/btnSignin"
-
         android:text="시작하기"
         android:textColor="#FFFFFF"
         android:textSize="30sp"

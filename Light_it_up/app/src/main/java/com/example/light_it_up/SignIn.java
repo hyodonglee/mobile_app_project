@@ -30,6 +30,7 @@ public class SignIn extends AppCompatActivity {
     String strNickname, strProfile, strEmail, strGender;
     EditText strPhone;
     String phoneNum;
+    Button signin;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -58,24 +59,17 @@ public class SignIn extends AppCompatActivity {
 
 
         Glide.with(this).load(strProfile).into(ivProfile); //프로필 사진 url을 사진으로 보여줌
-        btnLogout.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "정상적으로 로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
 
-                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                    @Override
-                    public void onCompleteLogout() {
-                        Intent intent = new Intent(SignIn.this, Login.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
 
         //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        signin = (Button) findViewById(R.id.btnSignin);
 
+        signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signUp(view);
+            }
+        });
     }
 
 
@@ -118,7 +112,7 @@ public class SignIn extends AppCompatActivity {
         intent.putExtra("name",strNickname);
         intent.putExtra("phone", phoneNum);
         writeNewUser(strNickname, strNickname, strEmail, strGender, phoneNum);//사용자 정보 디비에 저장
-        Toast.makeText(getApplicationContext(), "정상적으로 회원가입 되었습니다.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), strNickname+"님, 정상적으로 회원가입 되었습니다.",Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
 }
