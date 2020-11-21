@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment {
 
     String apiKey = "l7xx9e4f453a79804608bc16947e4ed09909";
     Button report;
+    String address;
 
     FloatingActionButton gps;
     Button findRoad;
@@ -225,7 +226,7 @@ public class HomeFragment extends Fragment {
         //버튼 클릭 리스너
 
 
-    /*    report.setOnClickListener(new View.OnClickListener() {
+/*        report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //우선 위치정보부터 받아옴
@@ -238,34 +239,36 @@ public class HomeFragment extends Fragment {
                     double locate_latitude = locate.getLatitude();
                     double locate_longitude = locate.getLongitude();
 
-                    SmsManager smsManager = SmsManager.getDefault();
-                    String sendTo = "01081319117";
-                    //String sendTo = "01028638656";
-                    //String sendTo = "01090856697";
-                    //String sendTo = "01030604595";
-
-
                     new TMapData().convertGpsToAddress(locate_latitude, locate_longitude,
                             new TMapData.ConvertGPSToAddressListenerCallback() {
                                 @Override
                                 public void onConvertToGPSToAddress(String strAddress) {
-                                    Log.d("address",strAddress);
-                                    System.out.println(strAddress);
+                                    address = strAddress;
+                                    //Log.d("address",strAddress);
+                                    System.out.println(address);
+
+                                    SmsManager smsManager = SmsManager.getDefault();
+                                    //String sendTo = "01081319117";
+                                    //String sendTo = "01028638656";
+                                    //String sendTo = "01090856697";
+                                    String sendTo = "01030604595";
 
                                     String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
-                                            + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n" + "현위치 = " + strAddress+"\n"
+                                            + "현위치 = " + address +"\n"
                                             + "신속 출동 바람.";
                                     smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
                                     Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
                                     // 긴급 메세지 신고 전송 기능 구현
-
                                 }
                             });
 
+                    System.out.println(address);
 
 
                     Intent intent1 = new Intent(getActivity(), VideoActivity.class);
                     startActivity(intent1);
+
+
                 }
             }
         });*/
@@ -397,11 +400,7 @@ public class HomeFragment extends Fragment {
                 double locate_longitude = locate.getLongitude();
 
                 SmsManager smsManager = SmsManager.getDefault();
-                String sendTo = "01081319117";
-                //String sendTo = "01028638656";
-                //String sendTo = "01090856697";
-                //String sendTo = "01030604595";
-
+                String sendTo = getString(R.string.phone_number);
 
                 new TMapData().convertGpsToAddress(locate_latitude, locate_longitude,
                         new TMapData.ConvertGPSToAddressListenerCallback() {
@@ -410,16 +409,13 @@ public class HomeFragment extends Fragment {
                                 Log.d("address",strAddress);
                                 System.out.println(strAddress);
 
-                                String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
-                                        + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n" + "현위치 = " + strAddress+"\n"
-                                        + "신속 출동 바람.";
+                                String myMessage = "위급상황 발생!!!!\n" + "[밝히길 App 신고]\n" + "신고자 현위치 = " + strAddress+"\n" + "신속 출동 바람.";
                                 smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
                                 Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
                                 // 긴급 메세지 신고 전송 기능 구현
 
                             }
                         });
-
 
 
                 Intent intent1 = new Intent(getActivity(), VideoActivity.class);
