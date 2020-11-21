@@ -33,16 +33,19 @@ import com.kakao.util.exception.KakaoException;
 
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.util.HashMap;
 
 
 public class Login extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference ref = firebaseDatabase.getReference("users");
 
-    public MeV2Response result;
+    public static MeV2Response result;
     private SessionCallback sessionCallback;
     private final int MSG_A = 0 ;
     private final int MSG_B = 1 ;
+
+    static HashMap<String, Object> userInfo = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,15 @@ public class Login extends AppCompatActivity {
         Session.getCurrentSession().checkAndImplicitOpen();
         getAppKeyHash();
     }
+
+    public static class  returnProfile{
+
+        public HashMap<String, Object> profile() {
+            return userInfo;
+        }
+    }
+
+
     Handler handler = new Handler(){
 
     };
@@ -82,6 +94,11 @@ public class Login extends AppCompatActivity {
                     else
                         intent.putExtra("gender", "none");
 
+                    userInfo.put("name", result.getNickname());
+                    userInfo.put("profile",result.getProfileImagePath());
+                    userInfo.put("email", result.getKakaoAccount().getEmail());
+                    userInfo.put("gender", result.getKakaoAccount().getGender().getValue());
+
                     startActivity(intent);
                     finish();
                     break;
@@ -109,6 +126,13 @@ public class Login extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), Navi.class);
                             intent.putExtra("name",result.getNickname());
                             intent.putExtra("email",result.getKakaoAccount().getEmail());
+
+                            userInfo.put("name", result.getNickname());
+                            userInfo.put("profile",result.getProfileImagePath());
+                            userInfo.put("email", result.getKakaoAccount().getEmail());
+                            userInfo.put("gender", result.getKakaoAccount().getGender().getValue());
+
+                            //Toast.makeText(this,result.getProfileImagePath(),Toast.LENGTH_SHORT).show();
 
                             message.what = MSG_A ;
                             message.obj = intent;
