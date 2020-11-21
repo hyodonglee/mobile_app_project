@@ -53,7 +53,9 @@ import javax.xml.parsers.ParserConfigurationException;
 public class HomeFragment extends Fragment {
     private static final long HOLD_PRESS_TIME = 3000;
     static receiveCoordinate receive;
-    static receiveCoordinateLight receiveLight;
+
+    static receiveCoordinateLight.Set option;
+
 
     static View view;
     RelativeLayout mapView;
@@ -80,6 +82,8 @@ public class HomeFragment extends Fragment {
 
     static boolean viewRoadCheck = false;
     static boolean viewRoadLightCheck = false;
+
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -199,7 +203,7 @@ public class HomeFragment extends Fragment {
                 viewRoadLightCheck = true;
                 receiveCoordinateLight receiveLight;
                 receiveLight=new receiveCoordinateLight(tMapView,getContext());
-                receiveLight.sendDataLight(startX,startY,endX,endY);
+                option=receiveLight.sendDataLight(startX,startY,endX,endY);
             }
         });
 
@@ -274,6 +278,8 @@ public class HomeFragment extends Fragment {
         showroad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(receive!=null){
                     if (viewRoadCheck) { // on
                         receive.deleteRoadLine();
                         viewRoadCheck = false;
@@ -283,20 +289,47 @@ public class HomeFragment extends Fragment {
                     }
 
                 }
-            });
+                else{
+                    Toast.makeText(getContext(), "길찾기 전 상태입니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         showRoadLight = (Button) view.findViewById(R.id.bnt_showLoadlight);
         showRoadLight.setOnClickListener(new View.OnClickListener() {//가로등경로 리스너
             @Override
             public void onClick(View view) {
 
-                if (viewRoadLightCheck) { // on
-                    receiveLight.deleteRoadLine();
-                    viewRoadLightCheck = false;
-                } else { // off
-                    receiveLight.redrawRoadLine();
-                    viewRoadLightCheck = true;
+
+                if(receive!=null){
+                        if (viewRoadCheck) { // on
+                            receive.deleteRoadLine();
+                            viewRoadCheck = false;
+                        }
                 }
+                String textStart = autoCompleteTextViewStart.getText().toString();
+                String textGoal = autoCompleteTextViewEnd.getText().toString();
+
+
+                String LocationStart = convertToLocation(textStart, 1);
+                String LocationEnd = convertToLocation(textGoal, 2);
+
+                StringTokenizer stS = new StringTokenizer(LocationStart);
+                StringTokenizer stG = new StringTokenizer(LocationEnd);
+
+                stS.nextToken();
+                double startY = Double.parseDouble(stS.nextToken());
+                stS.nextToken();
+                double startX = Double.parseDouble(stS.nextToken());
+                stG.nextToken();
+                double endY = Double.parseDouble(stG.nextToken());
+                stG.nextToken();
+                double endX = Double.parseDouble(stG.nextToken());
+
+                viewRoadLightCheck = true;
+                receiveCoordinateLight receiveLight;
+                receiveLight=new receiveCoordinateLight(tMapView,getContext());
+                option=receiveLight.sendDataLight(startX,startY,endX,endY);
 
             }
 
@@ -431,3 +464,5 @@ public class HomeFragment extends Fragment {
     };
 
 }
+
+

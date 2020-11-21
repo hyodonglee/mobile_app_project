@@ -38,6 +38,8 @@ public class receiveCoordinateBridge {
         private receiveCoordinateBridge httpConn = receiveCoordinateBridge.getInstance();
         private static OkHttpClient client;
         private  static receiveCoordinateBridge instance = new receiveCoordinateBridge();
+
+        public static receiveCoordinateFinish returnInstance;
         public static receiveCoordinateBridge getInstance() {
             return instance;
         }
@@ -47,7 +49,7 @@ public class receiveCoordinateBridge {
         }
 
 
-        public ArrayList<TMapPoint> sendData(Double startX,Double startY,Double endX,Double endY, Double finX, Double finY) {
+        public receiveCoordinateFinish sendData(Double startX,Double startY,Double endX,Double endY, Double finX, Double finY) {
             firX = endX; firY = endY;
             secX = finX; secY = finY;
             postThread request = new postThread(startX,startY,endX,endY);
@@ -59,7 +61,7 @@ public class receiveCoordinateBridge {
             catch(Exception e){
 
             }
-            return pointList;
+            return returnInstance;
         }
 
 
@@ -114,8 +116,9 @@ public class receiveCoordinateBridge {
                             }
                         }
                     }
-                    receiveCoordinateFinish reqFinPath = new receiveCoordinateFinish(TMapView);
-                    reqFinPath.sendData(firX, firY, secX, secY, pointList);
+                    receiveCoordinateFinish returnInstance = new receiveCoordinateFinish(TMapView);
+                    returnInstance.sendData(firX, firY, secX, secY, pointList);
+
 
                 } catch (ParseException e) {
                     e.printStackTrace();
