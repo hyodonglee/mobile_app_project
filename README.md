@@ -122,4 +122,17 @@
 
 ## 🔧 프로그램 구현
 
-<img src="https://user-images.githubusercontent.com/51476083/99881248-f9d40580-2c5b-11eb-9daf-1776de488493.png"/>
+<img src="https://user-images.githubusercontent.com/51476083/99881980-749f1f80-2c60-11eb-8215-272d7007179d.png"/>
+
+기존의 최단경로는 파란색으로 표시되며, 밝은 길 경로는 하늘색으로 표시해줍니다.
+
+<hr>
+ 
+<b> 긴급상황에 '긴급신고' 버튼을 3초간 누르고 있으면 동영상 촬영이 시작되며 다음과 같은 신고정보가 경찰서로 전달됩니다. </b>
+<br>
+
+<img src="https://user-images.githubusercontent.com/51476083/99882036-dcee0100-2c60-11eb-93a1-ff2f499727b6.png"/>
+
+<br>
+사용자의 위급상황이 촬영된 비디오는 Firebase의 storage에 저장되며, 해당 영상에 대한 링크를 사용자의 위치와 함께 전송합니다. 
+ 
