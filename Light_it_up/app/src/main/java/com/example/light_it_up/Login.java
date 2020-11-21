@@ -44,9 +44,6 @@ public class Login extends AppCompatActivity {
     private final int MSG_A = 0 ;
     private final int MSG_B = 1 ;
 
-    InfoFragment frag = new InfoFragment();
-    static Bundle bun = new Bundle();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +63,6 @@ public class Login extends AppCompatActivity {
 
             switch (msg.what) {
                 case MSG_A :
-                    bun.putString("name", result.getNickname());
-                    bun.putString("email" ,result.getKakaoAccount().getEmail());
-                    frag.setArguments(bun);
-
                     Intent intent1 = (Intent) msg.obj;
                     Toast.makeText(getApplicationContext(), result.getNickname()+"님, 정상적으로 로그인 되었습니다.",Toast.LENGTH_SHORT).show();
                     startActivity(intent1);
@@ -88,11 +81,6 @@ public class Login extends AppCompatActivity {
                         intent.putExtra("gender", result.getKakaoAccount().getGender().getValue());
                     else
                         intent.putExtra("gender", "none");
-                    bun.putString("name", result.getNickname());
-                    bun.putString("email" ,result.getKakaoAccount().getEmail());
-                    frag.setArguments(bun);
-
-                    System.out.println("테스트"+bun.getString("name"));
 
                     startActivity(intent);
                     finish();
@@ -120,6 +108,7 @@ public class Login extends AppCompatActivity {
                             String name = result.getNickname();
                             Intent intent = new Intent(getApplicationContext(), Navi.class);
                             intent.putExtra("name",result.getNickname());
+                            intent.putExtra("email",result.getKakaoAccount().getEmail());
 
                             message.what = MSG_A ;
                             message.obj = intent;

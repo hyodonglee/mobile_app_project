@@ -16,9 +16,6 @@ public class InfoFragment extends Fragment {
 
     String name;
 
-    public InfoFragment(){
-
-    }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -31,6 +28,7 @@ public class InfoFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("테스트"+getArguments());
                 Toast.makeText(getContext(), name,Toast.LENGTH_SHORT).show();
             }
         });

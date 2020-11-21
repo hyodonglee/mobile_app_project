@@ -64,39 +64,41 @@
     <RelativeLayout
         android:id="@+id/layoutMap"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:layout_weight="8"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/deslayout"
         android:orientation="horizontal">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_GPS"
-            android:src="@drawable/location"
-            android:backgroundTint="@color/browser_actions_bg_grey"
-            app:maxImageSize="60dp"
-            android:layout_marginTop="360dp"
-            android:layout_marginLeft="350dp"
-            >
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_GPS"
+        android:src="@drawable/location"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/btn"
+        android:backgroundTint="@color/browser_actions_bg_grey"
+        app:maxImageSize="60dp"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="#FF2A2828"
         android:id="@+id/btn"
-        android:layout_below="@+id/layoutMap"
+
         android:orientation="horizontal">
+
 
         <Button
             android:id="@+id/btn_findRoad"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/find"
+            android:background="@drawable/findroad"
             android:layout_marginLeft="10dp"
             android:textColor="#FF9800"
             android:textSize="20sp"
@@ -104,8 +106,8 @@
 
         <Button
             android:id="@+id/report"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/btn_findRoad"
             android:layout_weight="1"
@@ -113,7 +115,7 @@
 
         <Button
             android:id="@+id/btn_showLoad"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_toRightOf="@+id/report"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -123,7 +125,7 @@
 
         <Button
             android:id="@+id/bnt_showLoadlight"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/btn_showLoad"
             android:layout_marginLeft="20dp"
@@ -131,6 +133,6 @@
             android:layout_weight="1"/>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
