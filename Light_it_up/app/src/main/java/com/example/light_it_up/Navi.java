@@ -44,19 +44,6 @@ public class Navi extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        Intent intent = getIntent();
-        name = intent.getStringExtra("name");
-        email = intent.getStringExtra("email");
-
-        FragmentManager fragment = getSupportFragmentManager();
-        FragmentTransaction ft = fragment.beginTransaction();
-      //  ft.add()
-        Bundle bundle = new Bundle();
-
-        bundle.putString("name", name);
-        bundle.putString("email", email);
-      //  fragment.setArguments(bundle);
     }
 
     @Override
