@@ -80,7 +80,6 @@ public class Login extends AppCompatActivity {
             switch (msg.what) {
                 case MSG_A :
                     Intent intent1 = (Intent) msg.obj;
-                    System.out.println("로그인이다"+result);
                     Toast.makeText(getApplicationContext(), result.getNickname()+"님, 정상적으로 로그인 되었습니다.",Toast.LENGTH_SHORT).show();
                     startActivity(intent1);
                     finish();
