@@ -45,7 +45,7 @@ public class receiveCoordinateFinish {
         }
 
 
-        public ArrayList<TMapPoint> sendData(Double startX,Double startY,Double endX,Double endY,ArrayList<TMapPoint> argList) {
+        public receiveCoordinateFinish sendData(Double startX,Double startY,Double endX,Double endY,ArrayList<TMapPoint> argList) {
             postThread request = new postThread(startX,startY,endX,endY,argList);
             request.run();
 
@@ -55,7 +55,7 @@ public class receiveCoordinateFinish {
             catch(Exception e){
 
             }
-            return pointList;
+            return this;
         }
 
 
@@ -132,7 +132,7 @@ public class receiveCoordinateFinish {
     public void drawLine(ArrayList<TMapPoint> pointList){
 
         LightPolyLine = new TMapPolyLine();
-        LightPolyLine.setLineColor(Color.GREEN);
+        LightPolyLine.setLineColor(Color.RED);
         LightPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import com.example.light_it_up.ui.home.HomeFragment;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
@@ -54,6 +55,7 @@ public class receiveCoordinateLight {
 
     public static Context context;
 
+    public static
 
     ArrayList<TMapPoint> previousList = new ArrayList<>();
     ArrayList<TMapPoint> pointList = new ArrayList<TMapPoint>();
@@ -65,6 +67,9 @@ public class receiveCoordinateLight {
     private receiveCoordinate httpConn = receiveCoordinate.getInstance();
     private static OkHttpClient client;
     private  static receiveCoordinate instance = new receiveCoordinate();
+
+    public static receiveCoordinateFinish returnInstance;
+
     public static receiveCoordinate getInstance() {
         return instance;
     }
@@ -76,7 +81,7 @@ public class receiveCoordinateLight {
     }
 
 
-    public ArrayList<TMapPoint> sendDataLight(Double passstartX,Double passstartY,Double passendX,Double passendY) {
+    public Set sendDataLight(Double passstartX,Double passstartY,Double passendX,Double passendY) {
 
         this.startX=passstartX;
         this.startY=passstartY;
@@ -92,7 +97,9 @@ public class receiveCoordinateLight {
         catch(Exception e){
 
         }
-        return pointList;
+
+        return new Set(this,returnInstance);
+
     }
 
     /** 웹 서버로 요청을 한다. */
@@ -169,7 +176,7 @@ public class receiveCoordinateLight {
 //                    reqMidPath.sendDataLight(Double.parseDouble(firstDetourStart.first()), Double.parseDouble(firstDetourStart.second()), Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()));
 //                    ansList.addAll(reqMidPath.coordinates);
 
-                    reqMidPath.sendData(startX, startY, Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()), endX, endY);
+                    returnInstance=reqMidPath.sendData(startX, startY, Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()), endX, endY);
 //                    ansList.addAll(reqMidPath.pointList);
 
 //                    reqMidPath.sendData(Double.parseDouble(nextLamp.first()), Double.parseDouble(nextLamp.second()), endX, endY);
@@ -209,7 +216,7 @@ public class receiveCoordinateLight {
     public void drawLine(ArrayList<TMapPoint> pointList){
 
         LightPolyLine = new TMapPolyLine();
-        LightPolyLine.setLineColor(Color.GREEN);
+        LightPolyLine.setLineColor(Color.RED);
         LightPolyLine.setLineWidth(4);
 
         for( int i=0; i<pointList.size(); i++ ) {
@@ -382,5 +389,21 @@ public class receiveCoordinateLight {
         }
     }
 
+    public class Set{
+        receiveCoordinateFinish receiveFinish;
+        receiveCoordinateLight receiveLight;
+
+        Set(receiveCoordinateLight return1,receiveCoordinateFinish return2){
+            this.receiveLight=return1;
+            this.receiveFinish=return2;
+        }
+
+        public receiveCoordinateFinish getReceiveFinish(){return this.receiveFinish;}
+        public receiveCoordinateLight getReceiveLight(){return this.receiveLight;}
+    }
+
+
 }
+
+
 
