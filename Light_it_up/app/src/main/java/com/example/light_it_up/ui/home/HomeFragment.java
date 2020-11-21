@@ -7,11 +7,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -49,7 +51,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class HomeFragment extends Fragment {
-
+    private static final long HOLD_PRESS_TIME = 3000;
     static receiveCoordinate receive;
     static receiveCoordinateLight receiveLight;
 
@@ -201,9 +203,29 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        report.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        Log.w("Button", "Button is pressed...");
+                        //Start timer
+                        timer.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.w("Button", "Button is released...");
+                        //Clear timer
+                        timer.cancel();
+                        break;
+                }
+                return false;
+            }
+        });
+
         //버튼 클릭 리스너
 
-        report.setOnClickListener(new View.OnClickListener() {
+
+    /*    report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //우선 위치정보부터 받아옴
@@ -246,7 +268,7 @@ public class HomeFragment extends Fragment {
                     startActivity(intent1);
                 }
             }
-        });
+        });*/
 
         showroad = (Button) view.findViewById(R.id.btn_showLoad);
         showroad.setOnClickListener(new View.OnClickListener() {
@@ -356,5 +378,56 @@ public class HomeFragment extends Fragment {
         tMapView.addMarkerItem("markerItem1차2", markerItem2); // 지도에 마커 추가
 
     }
+
+    private CountDownTimer timer = new CountDownTimer(HOLD_PRESS_TIME, 200) {
+        @Override
+        public void onTick(long l) {
+            //Log.w("Button", "Count down..."+l); //It call onFinish() when l = 0
+        }
+
+        @Override
+        public void onFinish() {
+            if (Build.VERSION.SDK_INT >= 23 &&
+                    ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+            } else {
+                gpsTracker locate = new gpsTracker(getContext());
+                double locate_latitude = locate.getLatitude();
+                double locate_longitude = locate.getLongitude();
+
+                SmsManager smsManager = SmsManager.getDefault();
+                String sendTo = "01081319117";
+                //String sendTo = "01028638656";
+                //String sendTo = "01090856697";
+                //String sendTo = "01030604595";
+
+
+                new TMapData().convertGpsToAddress(locate_latitude, locate_longitude,
+                        new TMapData.ConvertGPSToAddressListenerCallback() {
+                            @Override
+                            public void onConvertToGPSToAddress(String strAddress) {
+                                Log.d("address",strAddress);
+                                System.out.println(strAddress);
+
+                                String myMessage = "위급상황 발생!!!!\n" + "현재 신고자 위치 좌표 : \n"
+                                        + "위도 = " + locate_latitude + "\n" + "경도 = " + locate_longitude + "\n" + "현위치 = " + strAddress+"\n"
+                                        + "신속 출동 바람.";
+                                smsManager.sendTextMessage(sendTo, null, myMessage, null, null);
+                                Toast.makeText(getContext(), "메세지 신고 완료", Toast.LENGTH_SHORT).show();
+                                // 긴급 메세지 신고 전송 기능 구현
+
+                            }
+                        });
+
+
+
+                Intent intent1 = new Intent(getActivity(), VideoActivity.class);
+                startActivity(intent1);
+            }
+            Log.w("Button", "Count finish...");
+
+        }
+    };
 
 }
